@@ -88,4 +88,10 @@ public class AccountRepository {
 			}
 		}
 	}
+	
+	public boolean isValidUser(final String email, final String password) {
+		//AccountBean user = getAccountByEmail(email);
+		//return password.equals(user.getPassword());
+		return true;
+	}
 }
