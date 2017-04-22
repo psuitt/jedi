@@ -1,0 +1,46 @@
+.col-1 {
+    display: inline-block;
+    width: 500px;
+    text-align: left;
+}
+
+.col-2 {
+    display: inline-block;
+    width: 100px;
+    text-align: left;
+}
+
+.col-3 {
+    display: inline-block;
+    text-align: left;
+}
+
+.mdl-list__item-primary-content {
+    text-align: left;
+}
+
+.mdl-list__item {
+    border: 2px solid transparent;
+}
+
+.mdl-list__item:hover {
+    border: 2px solid gray;
+}
+
+#taskContainer {
+    text-align: center;
+}
+
+#tasks {
+    width: 800px;
+    margin: 0 auto;
+    padding-bottom: 62px;
+}
+
+#taskInputs {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    padding: 3px 0;
+    background: rgba(0, 0, 0, .85);
+}
