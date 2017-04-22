@@ -1,0 +1,17 @@
+{
+  "name": "jediweb",
+  "homepage": "https://github.com/psuitt/jedi",
+  "authors": [
+    "phillip <suitt.phillip@live.com>"
+  ],
+  "description": "Court Hack 2017",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
