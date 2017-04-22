@@ -12,7 +12,7 @@ public class Heartbeat {
 
     @GET
     public Response get() {
-        return Response.ok().build();
+        return Response.ok("test").build();
     }
 
 }

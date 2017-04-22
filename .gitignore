@@ -1,10 +1,10 @@
 # Eclipse
-/target
-/.settings
-/bin
+*/target
+*/.settings
+*/bin
 # Test-NG
-/test-output
-/target/
+*/test-output
+*/target/
 # Intellij
 *.iml
-.idea/
+*.idea/
