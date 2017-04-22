@@ -18,7 +18,7 @@ public class HtmlPageController {
 
     public String getHtmlPage(final String page) {
 
-        final InputStream resourceAsStream = HtmlPageController.class.getResourceAsStream("resources/" + page);
+        final InputStream resourceAsStream = servletContext.getResourceAsStream("resources/" + page);
 
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
