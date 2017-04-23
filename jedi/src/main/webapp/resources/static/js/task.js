@@ -288,8 +288,11 @@ court.hack.task = function() {
     		window.location.href='/jedi/api/login';
     	} else {
         	var emailParam = Cookies.get("email");
+    		var account = JSON.parse(accountString);
+        	if (account.accountType === "ADMN") {
+        		$("#taskAdd").hide();
+        	}
         	if (emailParam === null || emailParam === null || emailParam === "" || typeof emailParam === "undefined") {
-        		var account = JSON.parse(accountString);
         		_loadTasks(account.email);
         	} else {
         		Cookies.remove("email");

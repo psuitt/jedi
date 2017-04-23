@@ -53,7 +53,7 @@ public class EmailService {
 
             // Create your text message part
             BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText("some text to send");
+            messageBodyPart.setText(bodyContent);
 
             // Add the text part to the multipart
             multipart.addBodyPart(messageBodyPart);
