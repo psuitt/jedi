@@ -15,26 +15,28 @@ court.hack.createtask = function() {
         $("#saveCreateTask").click(function() {
 
             var m = new moment();
+                m.subtract(1, 'd');
 
             var json = {
-                title: $("#owner").val(),
-                desc: $("#owner").val(),
-                date: $("#owner").val(),
+                title: $("#title").val(),
+                desc: $("#desc").val(),
+                date: new moment($("#date").val()).toDate(),
                 status: "",
                 creatorId: $("#owner").val(),
-                ownerId: $("#owner").val(),
+                ownerId: "",
                 //eventId,
-                reminderDate,
+                reminderDate: m.toDate(),
                 sentFlag: "N"
             };
 
             $.ajax({
                 url: "/jedi/api/createtask",
-                method: "POST",
+                method: "PUT",
                 data: JSON.stringify(json),
+                contentType: "application/json",
                 success: function (data) {
                     if (data && data.length > 0) {
-                        _.each(data, _loadTask);
+
                     }
                 },
                 error: function (xhr, status, error) {
