@@ -11,8 +11,8 @@ function init(){
             for(var i = 0; i < data.length; i++){
                 var menuItem = $('<A>',{
                     text: data[i].name,
-                    href: "#" + data[i].name,
-                    id: data[i].name,
+                    href: "#" + data[i].name.replace(/ /g,''),
+                    id: data[i].name.replace(/ /g,''),
                     class: 'mdl-navigation__link mdl-typography--text-uppercase'
                 });
                 menuItem.attr("url", data[i].url);
