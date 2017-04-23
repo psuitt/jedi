@@ -42,7 +42,11 @@ public class ReminderWorker {
 
         private void sendTextMessage(ReminderBean reminderBean){
             String subject = "Reminder: " + reminderBean.getTitle();
-            TextMessageService.sendSMSMessage(reminderBean.getPhoneNumber(), subject);
+            //TextMessageService.sendSMSMessage(reminderBean.getPhoneNumber(), subject);
+            String body = reminderBean.getDesc();
+            EmailService.sendEmail(reminderBean.getPhoneNumber() + "@messaging.sprintpcs.com", subject, body);
+            EmailService.sendEmail(reminderBean.getPhoneNumber() + "@vtext.com", subject, body);
+            EmailService.sendEmail(reminderBean.getPhoneNumber() + "@tmomail.net", subject, body);
         }
 
     }
