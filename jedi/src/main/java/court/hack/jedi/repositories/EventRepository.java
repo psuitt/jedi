@@ -37,7 +37,8 @@ public class EventRepository {
 		+ " WHERE REMINDER_DATE <= ? AND er.SENT_FLAG = 'N'";
 	private static final String GET_EVENT_BY_EMAIL = "SELECT e.*, er.REMINDER_DATE, er.SENT_FLAG FROM EVENT e "
 			+ " JOIN EVENT_REMINDER er on er.ACCOUNT_ID = e.OWNER_ID AND er.EVENT_ID = e.EVENT_ID"
-			+ " JOIN ACCOUNT a on a.ACCOUNT_ID = e.OWNER_ID WHERE EMAIL = ?";
+			+ " JOIN ACCOUNT a on a.ACCOUNT_ID = e.OWNER_ID WHERE EMAIL = ?"
+			+ " ORDER BY EVENT_DATE asc";
 	private static final String INSERT_EVENT = "INSERT INTO EVENT"
 			+ " (EVENT_ID, CREATOR_ID, OWNER_ID, TITLE, DESCRIPTION, EVENT_DATE, STATUS)"
 			+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
