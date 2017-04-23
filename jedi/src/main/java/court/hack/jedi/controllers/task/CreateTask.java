@@ -30,15 +30,13 @@ public class CreateTask extends HtmlPageController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response post(final TaskItem taskItem) {
-        eventRepository.updateEvent(taskItem);
-        return Response.ok().build();
+        return Response.ok(eventRepository.updateEvent(taskItem)).build();
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response put(final TaskItem taskItem) {
-        eventRepository.insertEvent(taskItem);
-        return Response.ok().build();
+        return Response.ok(eventRepository.insertEvent(taskItem)).build();
     }
 
 }
