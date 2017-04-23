@@ -59,3 +59,8 @@ li.selected .mdl-list__item {
 #taskAdd {
     margin-right: 50px;
 }
+
+#tasks li .mdl-list__item-avatar {
+    color: #424242;
+    background: white;
+}
