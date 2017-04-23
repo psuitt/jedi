@@ -8,7 +8,7 @@ public class TextMessageService {
 
     // Find your Account Sid and Token at twilio.com/user/account
     public static final String ACCOUNT_SID = "ACba7066fb6fbcf3be9ea0b2033db805e3";
-    public static final String AUTH_TOKEN = "ACba7066fb6fbcf3be9ea0b2033db805e3";
+    public static final String AUTH_TOKEN = "dccd4396fa5d6590984c15d2f7638ef9";
 
     public static void sendMessage(){
 
