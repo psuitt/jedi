@@ -9,32 +9,22 @@ court.hack.task = function() {
 
     var _dialog;
 
-    var _loadTasks = function() {
+    var _loadTasks = function(email) {
 
         var tasks = $("#tasks");
 
         tasks.html(" ");
-    	var accountString = Cookies.get("account");
-    	if (accountString == null) {
-    		window.location.href='/jedi/api/login'; 
-    	} else {
-    		var account = JSON.parse(accountString);
-            $.ajax({
-                url: "/jedi/api/task/data/" + account.email,
-                method: "GET",
-                success: function (data) {
-                    if (data && data.length > 0) {
-                        _.each(data, _loadTask);
-                    }
-                },
-                error: function (xhr, status, error) {
-
-                },
-                complete: function () {
-
+        $.ajax({
+            url: "/jedi/api/task/data/" + email,
+            method: "GET",
+            success: function (data) {
+                if (data && data.length > 0) {
+                    _.each(data, _loadTask);
                 }
-            });
-    	}
+            },
+            error: function (xhr, status, error) {},
+            complete: function () {}
+        });
     };
 
     var _loadTask = function(value, index) {
@@ -42,8 +32,16 @@ court.hack.task = function() {
         var tasks = $("#tasks");
         var li = $("<li></li>");
         var date = new Date(value.date);
+        var title = value.title;
+        var typeIndex =  title.indexOf(":");
+        var type = "";
 
-        li.addClass("mdl-list__item mdl-list__item--two-line");
+        if (typeIndex > -1) {
+            type = value.title.substr(0, typeIndex).toLowerCase();
+            title = value.title.substr(typeIndex + 1);
+        }
+
+        li.addClass("mdl-list__item mdl-list__item--two-line " + type);
 
         var spanPrimary = $("<span></span>");
         var spanTitle = $("<span></span>");
@@ -55,7 +53,7 @@ court.hack.task = function() {
 
         var col1 = $("<span></span>");
         col1.addClass("col-1");
-        col1.html(value.title);
+        col1.html(title);
 
         spanTitle.append(col1);
 
@@ -94,12 +92,17 @@ court.hack.task = function() {
 
         spanSecondary.addClass("mdl-list__item-secondary-action");
 
-        if (value.status) {
-            var icon = $("<i/>");
-            icon.addClass("material-icons md-48");
-            icon.html(value.status);
-            spanSecondary.append(icon);
+        var icon = $("<i/>");
+        icon.addClass("material-icons mdl-list__item-avatar");
+
+        if (type == "appt") {
+            icon.html("&#xE85D;");
+        } else if (type == "task") {
+            icon.html("&#xE8B5;");
         }
+
+
+        spanPrimary.prepend(icon);
 
         li.append(spanSecondary);
         li.data("data", value);
@@ -163,7 +166,19 @@ court.hack.task = function() {
     var _init = function() {
         $(document).off("dblclick", "#tasks li", _editDblClk);
         $(document).on("dblclick", "#tasks li", _editDblClk);
-        _loadTasks();
+    	var accountString = Cookies.get("account");
+    	if (accountString == null) {
+    		window.location.href='/jedi/api/login'; 
+    	} else {
+        	var emailParam = Cookies.get("email");
+        	if (emailParam === null || emailParam === null || emailParam === "" || typeof emailParam === "undefined") {
+        		var account = JSON.parse(accountString);
+        		_loadTasks(account.email);
+        	} else {
+        		Cookies.remove("email");
+        		_loadTasks(emailParam);
+        	}
+    	}
         _setUpDialog();
         getmdlSelect.init(".getmdl-select");
     };

@@ -58,6 +58,11 @@ court.hack.users = function() {
         spanPrimary.append(personIcon);
         spanPrimary.append(spanName);
         spanPrimary.append(spanTasks);
+        
+        spanPrimary.on("click", function() {
+        	Cookies.set("email", value.email);
+    		renderView('/jedi/resources/pages/task.html'); 
+        });
 
         li.append(spanPrimary);
 

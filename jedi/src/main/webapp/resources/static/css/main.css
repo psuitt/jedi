@@ -1,3 +1,11 @@
 .contentDiv {
 	text-align: center;
 }
+.android-navigation-container {
+	display: inherit;
+	width: 100%;
+}
+.mdl-layout-title {
+	line-height: 2;
+	font-size: 30px;
+}
