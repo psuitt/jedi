@@ -2,21 +2,25 @@ package court.hack.jedi.controllers.task;
 
 import court.hack.jedi.beans.TaskItem;
 import court.hack.jedi.controllers.HtmlPageController;
+import court.hack.jedi.repositories.EventRepository;
 
+import java.util.Collection;
+
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by b888pcs on 4/22/2017.
  */
 @Path("/task")
 public class Task extends HtmlPageController {
+	@Inject
+	private EventRepository eventRepository;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -26,21 +30,10 @@ public class Task extends HtmlPageController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/data")
-    public Response getJson() {
-
-        List<TaskItem> list = new ArrayList<>();
-
-        list.add(new TaskItem("Test", "text desc", new Date(), "done", "creator", "owner", new Date(), "N"));
-        list.add(new TaskItem("Test", "text desc", new Date(), "closed", "creator", "owner", new Date(), "N"));
-        list.add(new TaskItem("Test", "text desc", new Date(), "done", "creator", "owner", new Date(), "N"));
-        list.add(new TaskItem("Appt:Test", "text desc", new Date(), "", "creator", "owner", new Date(), "N"));
-        list.add(new TaskItem("Task:Test", "text desc", new Date(), "", "creator", "owner", new Date(), "N"));
-        list.add(new TaskItem("Test", "text desc", new Date(), "done", "creator", "owner", new Date(), "N"));
-        list.add(new TaskItem("Test", "text desc", new Date(), "done", "creator", "owner", new Date(), "N"));
-        list.add(new TaskItem("Test", "text desc", new Date(), "", "creator", "owner", new Date(), "N"));
-
-        return Response.ok(list, MediaType.APPLICATION_JSON).build();
+    @Path("/data/{email}")
+    public Response getJson(@PathParam("email") String email) {
+    	Collection<TaskItem> tasks = eventRepository.getEventsByEmail(email);
+        return Response.ok(tasks, MediaType.APPLICATION_JSON).build();
     }
 
 }
