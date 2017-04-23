@@ -109,8 +109,8 @@ court.hack.task = function() {
 
         spanPrimary.prepend(icon);
 
-        var date2 = new Date(value.date);
-        var date1 = new Date(value.reminderDate);
+        var date2 = new Date(value.reminderDate);
+        var date1 = new Date();
         var timeDiff = Math.abs(date2.getTime() - date1.getTime());
         var remind = $("<span></span>");
 
