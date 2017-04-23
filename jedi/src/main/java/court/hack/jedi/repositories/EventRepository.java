@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import javax.sql.DataSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.annotation.ApplicationScope;
 
+import court.hack.jedi.beans.ReminderBean;
 import court.hack.jedi.beans.TaskItem;
  
 @ApplicationScope
@@ -25,9 +27,13 @@ public class EventRepository {
 	@Inject
 	EventReminderRepository eventRemindeRepository;
 	
-	private static final String GET_EVENT_BY_EMAIL = "SELECT e.*, er.REMINDER_DATE, er.SENT_FLAG FROM EVENT e "
+	private static final String GET_PENDING_REMINDERS = "SELECT e.*, er.REMINDER_DATE, er.SENT_FLAG, a.EMAIL, a.PHONE FROM EVENT e "
 		+ " JOIN EVENT_REMINDER er on er.ACCOUNT_ID = e.OWNER_ID AND er.EVENT_ID = e.EVENT_ID"
-		+ " JOIN ACCOUNT a on a.ACCOUNT_ID = e.OWNER_ID WHERE EMAIL = ?";
+		+ " JOIN ACCOUNT a on a.ACCOUNT_ID = e.OWNER_ID"
+		+ " WHERE REMINDER_DATE <= ? AND er.SENT_FLAG = 'N'";
+	private static final String GET_EVENT_BY_EMAIL = "SELECT e.*, er.REMINDER_DATE, er.SENT_FLAG FROM EVENT e "
+			+ " JOIN EVENT_REMINDER er on er.ACCOUNT_ID = e.OWNER_ID AND er.EVENT_ID = e.EVENT_ID"
+			+ " JOIN ACCOUNT a on a.ACCOUNT_ID = e.OWNER_ID WHERE EMAIL = ?";
 	private static final String INSERT_EVENT = "INSERT INTO EVENT"
 			+ " (EVENT_ID, CREATOR_ID, OWNER_ID, TITLE, DESCRIPTION, EVENT_DATE, STATUS)"
 			+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -63,6 +69,39 @@ public class EventRepository {
 				tasks.add(bean);
 			}
 			return tasks;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Collection<ReminderBean> getPendingReminders() {
+		final Date today = new Date();
+		Collection<ReminderBean> reminders = new ArrayList<>();
+		Context ctx;
+		try {
+			ctx = new InitialContext();
+			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
+			Connection connection = ds.getConnection();
+			PreparedStatement ps = connection.prepareStatement(GET_PENDING_REMINDERS);
+			ps.setTimestamp(1, (Timestamp) today);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next())  {
+				ReminderBean bean = new ReminderBean();
+				bean.setCreatorId(rs.getString("CREATOR_ID"));
+				bean.setOwnerId(rs.getString("OWNER_ID"));
+				bean.setTitle(rs.getString("TITLE"));
+				bean.setDesc(rs.getString("DESCRIPTION"));
+				bean.setDate(rs.getTimestamp("EVENT_DATE"));
+				bean.setStatus(rs.getString("STATUS"));
+				bean.setEventId(rs.getString("EVENT_ID"));
+				bean.setReminderDate(rs.getTimestamp("REMINDER_DATE"));
+				bean.setSentFlag(rs.getString("SENT_FLAG"));
+				bean.setEmail(rs.getString("EMAIL"));
+				bean.setPhoneNumber(rs.getString("PHONE"));
+				reminders.add(bean);
+			}
+			return reminders;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
