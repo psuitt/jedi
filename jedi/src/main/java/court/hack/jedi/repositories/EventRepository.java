@@ -84,7 +84,7 @@ public class EventRepository {
 			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
 			Connection connection = ds.getConnection();
 			PreparedStatement ps = connection.prepareStatement(GET_PENDING_REMINDERS);
-			ps.setTimestamp(1, (Timestamp) today);
+			ps.setTimestamp(1, new Timestamp(today.getTime()));
 			ResultSet rs = ps.executeQuery();
 			while (rs.next())  {
 				ReminderBean bean = new ReminderBean();
