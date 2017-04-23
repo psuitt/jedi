@@ -1,34 +1,39 @@
 package court.hack.jedi.services;
 
-    import java.util.Properties;
-
-    import javax.mail.BodyPart;
-    import javax.mail.Message;
-    import javax.mail.MessagingException;
-    import javax.mail.Multipart;
-    import javax.mail.Session;
-    import javax.mail.Transport;
-    import javax.mail.internet.AddressException;
-    import javax.mail.internet.InternetAddress;
-    import javax.mail.internet.MimeBodyPart;
-    import javax.mail.internet.MimeMessage;
-    import javax.mail.internet.MimeMultipart;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.Properties;
 
 public class EmailService {
 
-    public static void sendEmail(String toEmailAddress, String subjectLine, String bodyContent){
-        Properties props = System.getProperties();
+    private Properties props = System.getProperties();
+    private Session session = Session.getInstance(props, null);
+
+    public EmailService() {
         props.put("mail.smtp.starttls.enable", true); // added this line
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.user", "court.hack.123");
-        props.put("mail.smtp.password", "Password@123");
+        props.put("mail.smtp.password", "Password@1234");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", true);
+    }
 
-        Session session = Session.getInstance(props, null);
+    public void sendEmail(String toEmailAddress, String subjectLine, String bodyContent) {
+
         MimeMessage message = new MimeMessage(session);
 
-        System.out.println("Port: "+session.getProperty("mail.smtp.port"));
+        System.out.println("Port: " + session.getProperty("mail.smtp.port"));
 
         // Create the email addresses involved
         try {
@@ -61,7 +66,7 @@ public class EmailService {
             // Send message
             Transport transport = session.getTransport("smtp");
             transport.connect("smtp.gmail.com", "court.hack.123", "Password@123");
-            System.out.println("Transport: "+transport.toString());
+            System.out.println("Transport: " + transport.toString());
             transport.sendMessage(message, message.getAllRecipients());
 
 
