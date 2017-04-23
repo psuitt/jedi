@@ -37,7 +37,7 @@ public class EventReminderRepository {
 		} else if (StringUtils.isEmpty(event.getEventId())) {
 			return "Event Id is necessary.";
 		} else if (StringUtils.isEmpty(event.getReminderDate())) {
-			return "Reminder Date is necessary.";
+			return "ReminderWorker Date is necessary.";
 		} else if (StringUtils.isEmpty(event.getSentFlag())) {
 			return "Sent Flag is necessary.";
 		} else {
@@ -75,7 +75,7 @@ public class EventReminderRepository {
 		} else if (StringUtils.isEmpty(event.getEventId())) {
 			return "Event Id is necessary.";
 		} else if (StringUtils.isEmpty(event.getReminderDate())) {
-			return "Reminder Date is necessary.";
+			return "ReminderWorker Date is necessary.";
 		} else if (StringUtils.isEmpty(event.getSentFlag())) {
 			return "Sent Flag is necessary.";
 		} else {
