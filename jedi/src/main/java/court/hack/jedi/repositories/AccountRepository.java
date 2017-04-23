@@ -3,14 +3,12 @@ package court.hack.jedi.repositories;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.faces.bean.ManagedBean;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.annotation.ApplicationScope;
 
@@ -19,19 +17,13 @@ import court.hack.jedi.beans.AccountBean;
 @ApplicationScope
 @ManagedBean
 public class AccountRepository {
+	
 	private static final String GET_ACCOUNT_BY_EMAIL = "SELECT * FROM ACCOUNT WHERE EMAIL = ?";
 	private static final String GET_ACCOUNT_BY_EMAIL_PASSWORD = "SELECT * FROM ACCOUNT WHERE EMAIL = ? AND PASSWORD = ?";
 	private static final String INSERT_ACCOUNT = "INSERT INTO ACCOUNT"
-			+ " (EMAIL, PASSWORD, ACCOUNT_TYPE, FIRST_NAME, LAST_NAME, PHONE_NUMBER)"
-			+ " VALUES (?, ?, ?, ?, ?, ?)";
-	
-	private static final RowMapper<AccountBean> ACCOUNT_ROW_MAPPER = new RowMapper<AccountBean>() {
-		@Override
-		public AccountBean mapRow(ResultSet rs, int arg1) throws SQLException {
-			return new AccountBean();
-		}
-	};
-	
+			+ " (ACCOUNT_ID, EMAIL, PASSWORD, ACCOUNT_TYPE, FIRST_NAME, LAST_NAME, PHONE)"
+			+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
+
 	public AccountBean getAccountByEmail(final String email) {
 		if (email == null || email.isEmpty()) {
 			return null;
@@ -45,7 +37,17 @@ public class AccountRepository {
 			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL);
 			ps.setString(1, email.toLowerCase());
 			ResultSet rs = ps.executeQuery();
-			return ACCOUNT_ROW_MAPPER.mapRow(rs, 0);
+			AccountBean bean = new AccountBean();
+			if (rs.next())  {
+				bean.setAccountId(rs.getString("ACCOUNT_ID"));
+				bean.setAccountType(rs.getString("ACCOUNT_TYPE"));
+				bean.setEmail(rs.getString("EMAIL"));
+				bean.setFirstName(rs.getString("FIRST_NAME"));
+				bean.setLastName(rs.getString("LAST_NAME"));
+				bean.setPassword(rs.getString("PASSWORD"));
+				bean.setPhoneNumber(rs.getString("PHONE"));
+				return bean;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,12 +78,13 @@ public class AccountRepository {
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
 				Connection connection = ds.getConnection();
 				PreparedStatement ps = connection.prepareStatement(INSERT_ACCOUNT);
-				ps.setString(1, account.getEmail().toLowerCase());
-				ps.setString(2, account.getPassword());
-				ps.setString(3, account.getAccountType());
-				ps.setString(4, account.getFirstName());
-				ps.setString(5, account.getLastName());
-				ps.setString(6, account.getPhoneNumber());
+				ps.setString(1, RepositoryUtil.createUniqueId());
+				ps.setString(2, account.getEmail().toLowerCase());
+				ps.setString(3, account.getPassword());
+				ps.setString(4, account.getAccountType());
+				ps.setString(5, account.getFirstName());
+				ps.setString(6, account.getLastName());
+				ps.setString(7, account.getPhoneNumber());
 				if (ps.executeUpdate() == 1) {
 					return null;
 				} else {
