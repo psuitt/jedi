@@ -1,6 +1,7 @@
 package court.hack.jedi.services;
 
 import court.hack.jedi.beans.ReminderBean;
+import court.hack.jedi.repositories.EventReminderRepository;
 import court.hack.jedi.repositories.EventRepository;
 
 import javax.faces.bean.ApplicationScoped;
@@ -16,6 +17,7 @@ import java.util.TimerTask;
 public class ReminderWorker {
 
     private EventRepository eventRepository = new EventRepository();
+    private EventReminderRepository eventReminderRepository = new EventReminderRepository();
     private EmailService emailService = new EmailService();
 
     private static Timer timer;
@@ -23,7 +25,7 @@ public class ReminderWorker {
     public ReminderWorker() {
         if (timer == null) {
             timer = new Timer();
-            timer.schedule(new ReminderChecker(eventRepository, emailService), 0, 30000);
+            timer.schedule(new ReminderChecker(eventRepository, emailService, eventReminderRepository), 0, 30000);
         }
     }
 
@@ -31,10 +33,12 @@ public class ReminderWorker {
 
         private EventRepository eventRepository;
         private EmailService emailService;
+        private EventReminderRepository eventReminderRepository;
 
-        public ReminderChecker(final EventRepository eventRepository, final EmailService emailService) {
+        public ReminderChecker(final EventRepository eventRepository, final EmailService emailService, final EventReminderRepository eventReminderRepository) {
             this.eventRepository = eventRepository;
             this.emailService = emailService;
+            this.eventReminderRepository = eventReminderRepository;
         }
 
         public void run() {
@@ -49,7 +53,7 @@ public class ReminderWorker {
                     sendTextMessage(reminderBean);
                 }
                 reminderBean.setSentFlag("Y");
-                this.eventRepository.updateEvent(reminderBean);
+                this.eventReminderRepository.updateEvent(reminderBean);
             }
         }
 
