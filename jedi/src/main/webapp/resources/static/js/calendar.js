@@ -9,8 +9,16 @@ court.hack.calendar = function() {
 
     var _getEvents = function(start, end, timezone, callback) {
 
+        var accountString = Cookies.get("account");
+        if (accountString == null) {
+            window.location.href='/jedi/api/login';
+            return;
+        }
+
+        var account = JSON.parse(accountString);
+
         $.ajax({
-            url: "/jedi/api/task/data",
+            url: "/jedi/api/task/data/" + account.email,
             method: "GET",
             success: function (data) {
                 if (data && data.length > 0) {
