@@ -7,7 +7,8 @@ court.hack.task = court.hack.task || {};
 
 court.hack.task = function() {
 
-    var _dialog;
+    var _dialog,
+        _data;
 
     var _loadTasks = function(email) {
 
@@ -130,37 +131,131 @@ court.hack.task = function() {
         _dialog.querySelector('.close').addEventListener('click', function() {
             _dialog.close();
             $("#dialogTitle").html("Add Task");
+            _data = false;
         });
 
-        _dialog.querySelector('.add').addEventListener('click', function() {
-            var inputs = $("#dialogInputs input");
-            var task =  {
-                title: inputs.eq(0).val(),
-                desc: inputs.eq(1).val(),
-                date: new Date(),
-                time: inputs.eq(3).val(),
-                status: "close"
-            };
-            _loadTask(task, $("#tasks li").length);
-            componentHandler.upgradeAllRegistered();
-            _dialog.close();
-            $("#dialogTitle").html("Add Task");
-        });
+        _dialog.querySelector('.add').addEventListener('click', _saveEvent);
+
+    };
+
+    var _saveEvent = function() {
+
+        var m = new moment();
+        m.subtract(1, 'd');
+
+        var account = Cookies.get("account");
+
+        if (!account) {
+            location.href = window.location.origin + '/jedi/api/login';
+        }
+
+        account = JSON.parse(account);
+
+        var json = {
+            title: $("#title").val(),
+            desc: $("#description").val(),
+            date: m.toDate(),
+            status: $("#status").val(),
+            creatorId: account.accountId,
+            reminderDate: m.toDate(),
+            sentFlag: "N"
+        };
+
+        m = new moment($("#date").val());
+        json.date = m.toDate();
+
+        if (_data) {
+
+            json.eventId = _data.eventId;
+            json.ownerId = _data.ownerId;
+
+            m.add($("#reminderLength").val(), $("#reminder").val());
+
+            json.reminderDate = m.toDate();
+
+            $.ajax({
+                url: "/jedi/api/task",
+                method: "POST",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function (data) {
+                    if (!data) {
+                        document.querySelector('#title').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#description').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#date').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#status').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#reminderLength').parentNode.MaterialTextfield.change("");
+                        _loadTask(json, $("#tasks li").length);
+                        componentHandler.upgradeAllRegistered();
+                        _dialog.close();
+                        $("#dialogTitle").html("Add Task");
+                        _data = false;
+                    } else {
+                        alert(data);
+                    }
+                },
+                error: function (xhr, status, error) {
+
+                },
+                complete: function () {
+
+                }
+            });
+        } else {
+
+            json.ownerId = json.creatorId;
+
+            m.add($("#reminderLength").val(), $("#reminder").val());
+
+            json.reminderDate = m.toDate();
+
+            $.ajax({
+                url: "/jedi/api/createtask",
+                method: "PUT",
+                data: JSON.stringify(json),
+                contentType: "application/json",
+                success: function (data) {
+                    if (!data) {
+                        document.querySelector('#title').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#description').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#date').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#status').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#reminderLength').parentNode.MaterialTextfield.change("");
+                        _loadTask(json, $("#tasks li").length);
+                        componentHandler.upgradeAllRegistered();
+                        _dialog.close();
+                        $("#dialogTitle").html("Add Task");
+                        _data = false;
+                    } else {
+                        alert(data);
+                    }
+                },
+                error: function (xhr, status, error) {
+
+                },
+                complete: function () {
+
+                }
+            });
+        }
+
+
 
     };
 
     var _editDblClk = function() {
 
-        var self = $(this),
-            data = self.data("data");
+        var self = $(this);
+
+        _data = self.data("data");
 
         $("#dialogTitle").html("Edit Task");
         self.addClass("selected");
 
-        document.querySelector('#title').parentNode.MaterialTextfield.change(data.title);
-        document.querySelector('#description').parentNode.MaterialTextfield.change(data.desc);
-        document.querySelector('#date').parentNode.MaterialTextfield.change(data.date);
-        document.querySelector('#status').parentNode.MaterialTextfield.change(data.status);
+        document.querySelector('#title').parentNode.MaterialTextfield.change(_data.title);
+        document.querySelector('#description').parentNode.MaterialTextfield.change(_data.desc);
+        document.querySelector('#date').parentNode.MaterialTextfield.change(new moment(_data.date).format("MM/DD/YYYY"));
+        document.querySelector('#status').parentNode.MaterialTextfield.change(_data.status);
 
         _dialog.showModal();
 
@@ -171,7 +266,7 @@ court.hack.task = function() {
         $(document).on("dblclick", "#tasks li", _editDblClk);
     	var accountString = Cookies.get("account");
     	if (accountString == null) {
-    		window.location.href='/jedi/api/login'; 
+    		window.location.href='/jedi/api/login';
     	} else {
         	var emailParam = Cookies.get("email");
         	if (emailParam === null || emailParam === null || emailParam === "" || typeof emailParam === "undefined") {

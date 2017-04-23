@@ -27,12 +27,6 @@ public class CreateTask extends HtmlPageController {
         return Response.ok(getHtmlPage("pages/create_task.html"), MediaType.TEXT_HTML_TYPE).build();
     }
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response post(final TaskItem taskItem) {
-        return Response.ok(eventRepository.updateEvent(taskItem)).build();
-    }
-
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response put(final TaskItem taskItem) {

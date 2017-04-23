@@ -87,11 +87,13 @@ public class EventReminderRepository {
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
 				Connection connection = ds.getConnection();
 				PreparedStatement ps = connection.prepareStatement(UPDATE_EVENT_REMINDER);
-				ps.setTimestamp(1, (Timestamp) event.getReminderDate());
+				ps.setObject(1, event.getReminderDate());
 				ps.setString(2, event.getSentFlag());
 				ps.setString(3, event.getEventId());
 				ps.setString(4, event.getOwnerId());
 				if (ps.executeUpdate() == 1) {
+                    ps.close();
+                    connection.close();
 					return null;
 				} else {
 					return "No rows were updated";
