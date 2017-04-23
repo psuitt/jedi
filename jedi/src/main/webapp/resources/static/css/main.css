@@ -6,6 +6,12 @@ body {
     background: rgba(0, 0, 0, .7);
 }
 
+#homeLink,
+#homeLink:hover {
+    text-decoration: none !important;
+    color: white;
+}
+
 .contentDiv {
     text-align: center;
 }
