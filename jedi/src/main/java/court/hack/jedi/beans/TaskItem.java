@@ -1,20 +1,32 @@
 package court.hack.jedi.beans;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 /**
  * Created by b888pcs on 4/22/2017.
  */
+@XmlRootElement
 public class TaskItem {
 
+    @XmlElement(name = "title")
     private String title;
+    @XmlElement(name = "desc")
     private String desc;
+    @XmlElement(name = "date")
     private Date date;
+    @XmlElement(name = "status")
     private String status;
+    @XmlElement(name = "creatorId")
     private String creatorId;
+    @XmlElement(name = "ownerId")
     private String ownerId;
+    @XmlElement(name = "eventId")
     private String eventId;
+    @XmlElement(name = "reminderDate")
     private Date reminderDate;
+    @XmlElement(name = "sentFlag")
     private String sentFlag;
 
     public TaskItem() {
