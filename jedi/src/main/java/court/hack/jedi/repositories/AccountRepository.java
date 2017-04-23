@@ -5,15 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.faces.bean.ManagedBean;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import court.hack.jedi.beans.AccountBean;
 
+@ApplicationScope
+@ManagedBean
 public class AccountRepository {
 	private static final String GET_ACCOUNT_BY_EMAIL = "SELECT * FROM ACCOUNT WHERE EMAIL = ?";
 	private static final String INSERT_ACCOUNT = "INSERT INTO ACCOUNT"
