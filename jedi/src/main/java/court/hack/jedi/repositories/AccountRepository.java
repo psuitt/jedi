@@ -20,6 +20,7 @@ import court.hack.jedi.beans.AccountBean;
 @ManagedBean
 public class AccountRepository {
 	private static final String GET_ACCOUNT_BY_EMAIL = "SELECT * FROM ACCOUNT WHERE EMAIL = ?";
+	private static final String GET_ACCOUNT_BY_EMAIL_PASSWORD = "SELECT * FROM ACCOUNT WHERE EMAIL = ? AND PASSWORD = ?";
 	private static final String INSERT_ACCOUNT = "INSERT INTO ACCOUNT"
 			+ " (EMAIL, PASSWORD, ACCOUNT_TYPE, FIRST_NAME, LAST_NAME, PHONE_NUMBER)"
 			+ " VALUES (?, ?, ?, ?, ?, ?)";
@@ -42,7 +43,7 @@ public class AccountRepository {
 			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
 			Connection connection = ds.getConnection();
 			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL);
-			ps.setString(0, email);
+			ps.setString(1, email.toLowerCase());
 			ResultSet rs = ps.executeQuery();
 			return ACCOUNT_ROW_MAPPER.mapRow(rs, 0);
 		} catch (Exception e) {
@@ -75,7 +76,7 @@ public class AccountRepository {
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
 				Connection connection = ds.getConnection();
 				PreparedStatement ps = connection.prepareStatement(INSERT_ACCOUNT);
-				ps.setString(0, account.getEmail());
+				ps.setString(0, account.getEmail().toLowerCase());
 				ps.setString(0, account.getPassword());
 				ps.setString(0, account.getAccountType());
 				ps.setString(0, account.getFirstName());
@@ -94,8 +95,27 @@ public class AccountRepository {
 	}
 	
 	public boolean isValidUser(final String email, final String password) {
-		//AccountBean user = getAccountByEmail(email);
-		//return password.equals(user.getPassword());
-		return true;
+		if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+			return false;
+		}
+		
+		Context ctx;
+		try {
+			ctx = new InitialContext();
+			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
+			Connection connection = ds.getConnection();
+			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL_PASSWORD);
+			ps.setString(1, email.toLowerCase());
+			ps.setString(2, password);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
