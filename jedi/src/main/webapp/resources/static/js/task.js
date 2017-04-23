@@ -14,24 +14,27 @@ court.hack.task = function() {
         var tasks = $("#tasks");
 
         tasks.html(" ");
+    	var accountString = Cookies.get("account");
+    	if (accountString == null) {
+    		window.location.href='/jedi/api/login'; 
+    	} else {
+    		var account = JSON.parse(accountString);
+            $.ajax({
+                url: "/jedi/api/task/data/" + account.email,
+                method: "GET",
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        _.each(data, _loadTask);
+                    }
+                },
+                error: function (xhr, status, error) {
 
-        $.ajax({
-            url: "/jedi/api/task/data",
-            method: "GET",
-            success: function (data) {
-                if (data && data.length > 0) {
-                    _.each(data, _loadTask);
+                },
+                complete: function () {
+
                 }
-            },
-            error: function (xhr, status, error) {
-
-            },
-            complete: function () {
-
-            }
-        });
-
-
+            });
+    	}
     };
 
     var _loadTask = function(value, index) {
