@@ -2,8 +2,6 @@ package court.hack.jedi.controllers.home;
 
 import court.hack.jedi.beans.MenuItemBean;
 import court.hack.jedi.controllers.HtmlPageController;
-import court.hack.jedi.services.EmailService;
-import court.hack.jedi.services.TextMessageService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
