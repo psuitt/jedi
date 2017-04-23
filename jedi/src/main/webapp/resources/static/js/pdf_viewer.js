@@ -80,29 +80,35 @@
         }
 
         function createCloseIcon() {
-            var close = document.createElement("div");
-            close.id = "close";
-            close.style.height = "36px";
-            close.style.width = "36px";
-            close.style.margin = "12px";
-            close.style.color = "#fff";
-            close.style.display = "inline-block";
-            close.innerHTML = "close";
-            close.addEventListener("click", closeViewer);
-            return close;
+            var closeIconContainer = document.createElement("div");
+            closeIconContainer.id = "close";
+            closeIconContainer.style.height = "36px";
+            closeIconContainer.style.width = "36px";
+            closeIconContainer.style.margin = "12px";
+            closeIconContainer.style.color = "#fff";
+            closeIconContainer.style.display = "inline-block";
+            closeIconContainer.addEventListener("click", closeViewer);
+            var closeIcon = document.createElement("i");
+            closeIcon.className = "material-icons";
+            closeIcon.innerHTML = "&#xE14C;";
+            closeIconContainer.appendChild(closeIcon);
+            return closeIconContainer;
         }
 
         function createDownloadIcon() {
-            var previewIconContainer = document.createElement("div");
-            previewIconContainer.id = "previewIconContainer";
-            previewIconContainer.style.height = "36px";
-            previewIconContainer.style.width = "36px";
-            previewIconContainer.style.margin = "12px";
-            previewIconContainer.style.color = "#fff";
-            previewIconContainer.style.display = "inline-block";
-            previewIconContainer.innerHTML = "download";
-            previewIconContainer.addEventListener("click", downloadPdf);
-            return previewIconContainer;
+            var downloadIconContainer = document.createElement("div");
+            downloadIconContainer.id = "download";
+            downloadIconContainer.style.height = "36px";
+            downloadIconContainer.style.width = "36px";
+            downloadIconContainer.style.margin = "12px";
+            downloadIconContainer.style.color = "#fff";
+            downloadIconContainer.style.display = "inline-block";
+            downloadIconContainer.addEventListener("click", downloadPdf);
+            var downloadIcon = document.createElement("i");
+            downloadIcon.className = "material-icons";
+            downloadIcon.innerHTML = "&#xE2C4;";
+            downloadIconContainer.appendChild(downloadIcon);
+            return downloadIconContainer;
         }
 
         function createViewer() {
