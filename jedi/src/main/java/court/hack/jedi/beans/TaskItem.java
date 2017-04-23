@@ -14,20 +14,25 @@ public class TaskItem {
     private String creatorId;
     private String ownerId;
     private String eventId;
+    private Date reminderDate;
+    private String sentFlag;
 
     public TaskItem() {
     }
-    
-    public TaskItem(final String title, final String desc, final Date date, final String status, final String creatorId, final String ownerId) {
+
+	public TaskItem(final String title, final String desc, final Date date, final String status, final String creatorId, 
+			final String ownerId, final Date reminderDate, final String sentFlag) {
         this.title = title;
         this.desc = desc;
         this.date = date;
         this.status = status;
         this.creatorId = creatorId;
         this.ownerId = ownerId;
+        this.reminderDate = reminderDate;
+        this.sentFlag = sentFlag;
     }
 
-    public String getCreatorId() {
+	public String getCreatorId() {
 		return creatorId;
 	}
 
@@ -38,20 +43,28 @@ public class TaskItem {
 	public String getDesc() {
         return desc;
     }
-
-	public String getEventId() {
+    
+    public String getEventId() {
 		return eventId;
 	}
 
-	public String getOwnerId() {
+    public String getOwnerId() {
 		return ownerId;
 	}
 
-    public String getStatus() {
+	public Date getReminderDate() {
+		return reminderDate;
+	}
+
+	public String getSentFlag() {
+		return sentFlag;
+	}
+
+	public String getStatus() {
         return status;
     }
 
-    public String getTitle() {
+	public String getTitle() {
         return title;
     }
 
@@ -73,6 +86,14 @@ public class TaskItem {
 
     public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
+	}
+
+    public void setReminderDate(Date reminderDate) {
+		this.reminderDate = reminderDate;
+	}
+
+    public void setSentFlag(String sentFlag) {
+		this.sentFlag = sentFlag;
 	}
 
 	public void setStatus(final String status) {

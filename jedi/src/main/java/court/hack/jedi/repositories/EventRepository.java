@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.faces.bean.ManagedBean;
+import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -21,8 +22,12 @@ import court.hack.jedi.beans.TaskItem;
 @ApplicationScope
 @ManagedBean
 public class EventRepository {
+	@Inject
+	EventReminderRepository eventRemindeRepository;
 	
-	private static final String GET_EVENT_BY_EMAIL = "SELECT e.* FROM EVENT e JOIN ACCOUNT a on a.ACCOUNT_ID = e.OWNER_ID WHERE EMAIL = ?";
+	private static final String GET_EVENT_BY_EMAIL = "SELECT e.*, FROM EVENT e "
+		+ " JOIN EVENT_REMINDER er on er.ACCOUNT_ID = e.OWNER_ID AND er.EVENT_ID = e.EVENT_ID"
+		+ " JOIN ACCOUNT a on a.ACCOUNT_ID = e.OWNER_ID WHERE EMAIL = ?";
 	private static final String INSERT_EVENT = "INSERT INTO EVENT"
 			+ " (EVENT_ID, CREATOR_ID, OWNER_ID, TITLE, DESCRIPTION, EVENT_DATE, STATUS)"
 			+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -96,6 +101,7 @@ public class EventRepository {
 				ps.setTimestamp(6, (Timestamp) event.getDate());
 				ps.setString(7, event.getStatus());
 				if (ps.executeUpdate() == 1) {
+					eventRemindeRepository.insertEvent(event);
 					return null;
 				} else {
 					return "No rows were inserted";
@@ -143,9 +149,10 @@ public class EventRepository {
 				ps.setString(6, event.getStatus());
 				ps.setString(7, event.getEventId());
 				if (ps.executeUpdate() == 1) {
+					eventRemindeRepository.updateEvent(event);
 					return null;
 				} else {
-					return "No rows were u";
+					return "No rows were updated";
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
