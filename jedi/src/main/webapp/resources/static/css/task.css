@@ -47,7 +47,11 @@
     width: 100%;
     position: fixed;
     bottom: 0;
-    padding: 3px 0;
-    background: rgba(0, 0, 0, .85);
+    padding: 15px;
     z-index: 1000;
+    text-align: right;
+}
+
+#taskAdd {
+    margin-right: 50px;
 }
