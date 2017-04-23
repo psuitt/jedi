@@ -1,0 +1,53 @@
+
+<h2>Update Account</h2>
+<div class="contentDiv">
+	<form action="#" class="beforeSearch">
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" id="accountId"/>
+			<label class="mdl-textfield__label" for="accountId">Account ID</label>
+			<span class="mdl-textfield__error">Not a valid account ID.</span>
+		</div>
+	</form>
+	<form action="#" class="afterSearch">
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" type="email" id="email"/>
+			<label class="mdl-textfield__label" for="username">Email Address</label>
+			<span class="mdl-textfield__error">Not a valid email address.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" type="password" id="userpass" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"/>
+			<label class="mdl-textfield__label" for="userpass">Password</label>
+			<span class="mdl-textfield__error">Not a valid password.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" id="firstName"/>
+			<label class="mdl-textfield__label" for="userpass">First Name</label>
+			<span class="mdl-textfield__error">Not a valid first name.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" id="lastName"/>
+			<label class="mdl-textfield__label" for="userpass">Last Name</label>
+			<span class="mdl-textfield__error">Not a valid last name.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" id="accountType"/>
+			<label class="mdl-textfield__label" for="userpass">Account Type</label>
+			<span class="mdl-textfield__error">Not a valid account type.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" type="tel" id="phoneNumber"/>
+			<label class="mdl-textfield__label" for="userpass">Phone Number</label>
+			<span class="mdl-textfield__error">Not a valid phone number.</span>
+		</div>
+	</form>
+	<div class="mdl-card__actions mdl-card--border">
+		<button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect beforeSearch" onclick="searchClicked();">Find Account</button>
+		<button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect afterSearch" onclick="submitClicked();">Update Account</button>
+	</div>
+</div>
+<script src="/jedi/resources/static/js/update_account.js"></script>

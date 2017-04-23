@@ -12,15 +12,14 @@ function submitClicked() {
 		type: "POST",
 		url: "/jedi/api/create_account",
 		data: JSON.stringify(data),
-		dataType: "json",
 		contentType : "application/json",
 		cache: false,
 		async: false,
-		success: function(data) {
-			if (data) {
+		success: function(data, textStatus, jqXHR) {
+			if (data == null || data === "") {
 				window.location.reload(); 
 			} else {
-				alert("Something went awry.");	
+				alert(data);	
 			}
 		},
 		error: function(xhr, error, thrown) {

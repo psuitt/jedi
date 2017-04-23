@@ -4,7 +4,6 @@ import court.hack.jedi.beans.MenuItemBean;
 import court.hack.jedi.controllers.HtmlPageController;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -48,6 +47,10 @@ public class Home extends HtmlPageController {
         menuItem = new MenuItemBean();
         menuItem.setName("Create Account");
         menuItem.setUrl("/jedi/resources/pages/create_account.html");
+        menuItemList.add(menuItem);
+        menuItem = new MenuItemBean();
+        menuItem.setName("Update Account");
+        menuItem.setUrl("/jedi/resources/pages/update_account.html");
         menuItemList.add(menuItem);
         return Response.ok(menuItemList, MediaType.APPLICATION_JSON).build();
     }
