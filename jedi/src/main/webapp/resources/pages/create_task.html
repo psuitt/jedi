@@ -1,7 +1,27 @@
 <link rel="stylesheet" href="/jedi/resources/static/css/createtask.css">
 
-<h2>Create Tasks</h2>
+<div id="createTaskContainer">
+    <h2>Create Tasks</h2>
 
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="owner">
+        <label class="mdl-textfield__label" for="owner">Owner</label>
+    </div>
 
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="title">
+        <label class="mdl-textfield__label" for="title">Title</label>
+    </div>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="desc">
+        <label class="mdl-textfield__label" for="desc">Description</label>
+    </div>
+
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+        Save
+    </button>
+
+</div>
 
 <script src="/jedi/resources/static/js/createtask.js"></script>
