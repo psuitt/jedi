@@ -62,7 +62,16 @@ court.hack.task = function() {
 
         var col3 = $("<span></span>");
         col3.addClass("col-3");
-        col3.html(date.getHours() + ":" + date.getMinutes());
+
+        var hours = date.getHours();
+        var time = "AM";
+
+        if (hours > 11) {
+            hours -= 12;
+            time = "PM"
+        }
+
+        col3.html(hours + ":" + date.getMinutes() + " " + time);
 
         spanTitle.append(col3);
 
