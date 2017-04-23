@@ -7,22 +7,29 @@ court.hack.task = court.hack.task || {};
 
 court.hack.task = function() {
 
-    var _list = [
-        {title: "Title 1", desc: "Description 1", date: "12/1/2017", time: "10:10pm"},
-        {title: "Title 2", desc: "Description 2", date: "12/2/2017", time: "10:10pm"},
-        {title: "Title 3", desc: "Description 3", date: "12/3/2017", time: "10:10pm"},
-        {title: "Title 4", desc: "Description 4", date: "12/4/2017", time: "10:10pm"},
-        {title: "Title 5", desc: "Description 5", date: "12/5/2017", time: "10:10pm"},
-        {title: "Title 6", desc: "Description 6", date: "12/6/2017", time: "10:10pm"}
-    ];
-
     var _loadTasks = function() {
 
         var tasks = $("#tasks");
 
         tasks.html(" ");
 
-        _.each(_list, _loadTask);
+        $.ajax({
+            url: "/jedi/api/task/data",
+            method: "GET",
+            dataType: "application/json",
+            success: function (data) {
+                if (data && data.length > 0) {
+                    _.each(data, _loadTask);
+                }
+            },
+            error: function (xhr, status, error) {
+
+            },
+            complete: function () {
+
+            }
+        });
+
 
     };
 
@@ -30,6 +37,7 @@ court.hack.task = function() {
 
         var tasks = $("#tasks");
         var li = $("<li></li>");
+        var date = new Date(value.date);
 
         li.addClass("mdl-list__item mdl-list__item--two-line");
 
@@ -49,13 +57,13 @@ court.hack.task = function() {
 
         var col2 = $("<span></span>");
         col2.addClass("col-2");
-        col2.html(value.date);
+        col2.html(date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear());
 
         spanTitle.append(col2);
 
         var col3 = $("<span></span>");
         col3.addClass("col-3");
-        col3.html(value.time);
+        col3.html(date.getHours() + ":" + date.getMinutes());
 
         spanTitle.append(col3);
 
@@ -76,21 +84,19 @@ court.hack.task = function() {
         label.attr("for", "input-" + index);
         label.addClass("mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect");
 
-        var input = $("<input/>");
 
-        input.attr("id", "input-" + index);
-        input.attr("type", "checkbox");
-        input.addClass("mdl-checkbox__input");
-
-        label.append(input);
+        if (value.status) {
+            var icon = $("<i/>");
+            icon.addClass("material-icons md-48");
+            icon.html(value.status);
+            label.append(icon);
+        }
 
         spanSecondary.append(label);
 
         li.append(spanSecondary);
 
         tasks.append(li);
-
-        tasks.upgradeElement();
 
     };
 
@@ -103,9 +109,11 @@ court.hack.task = function() {
                 title: inputs.eq(0).val(),
                 desc: inputs.eq(1).val(),
                 date: inputs.eq(2).val(),
-                time: inputs.eq(3).val()
+                time: inputs.eq(3).val(),
+                status: "close"
             };
             _loadTask(task, $("#tasks li").length);
+            componentHandler.upgradeAllRegistered();
         });
     };
 
@@ -121,3 +129,5 @@ function readyFn( jQuery ) {
 }
 
 $( document ).ready( court.hack.task.init() );
+
+// @task.js
