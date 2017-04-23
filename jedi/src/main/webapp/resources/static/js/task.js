@@ -66,17 +66,20 @@ court.hack.task = function() {
         var col3 = $("<span></span>");
         col3.addClass("col-3");
 
-        var hours = date.getHours();
-        var time = "AM";
-
-        if (hours > 11) {
-            hours -= 12;
-            time = "PM"
-        } else if (hours == 0) {
-            hours += 12;
+        if (date.getHours() != 0 || date.getMinutes() != 0) {
+	        var hours = date.getHours();
+	        var time = "AM";
+	
+	        if (hours > 11) {
+	            hours -= 12;
+	            time = "PM"
+	        } else if (hours == 0) {
+	            hours += 12;
+	        }
+	
+	        var leadingZero = (date.getMinutes() < 10 ? "0":"");
+	        col3.html(hours + ":" + leadingZero + date.getMinutes() + " " + time);
         }
-
-        col3.html(hours + ":" + date.getMinutes() + " " + time);
 
         spanTitle.append(col3);
 
