@@ -3,7 +3,7 @@
 
     function PdfViewer() {
 
-        var RETRIEVE_DOC_URL = "/jedi/api/getpdf/";
+        var RETRIEVE_DOC_URL = "/jedi/resources/static/pdf/CASE_MANAGEMENT_ORDER.pdf";
         var GET = "GET";
 
         var pdfDoc = null;
@@ -107,7 +107,7 @@
 
         function createViewer() {
             var viewer = document.createElement("div");
-            viewer.id = "viewer";
+            viewer.id = "pdf-viewer";
             viewer.style.position = "absolute";
             viewer.style.top = "48px";
             viewer.style.left = "0";
@@ -118,7 +118,7 @@
 
         function getPdf() {
             var xhr = new XMLHttpRequest();
-            xhr.open(GET, RETRIEVE_DOC_URL + documentId, true);
+            xhr.open(GET, RETRIEVE_DOC_URL, true);
             xhr.responseType = "arraybuffer";
             xhr.onload = function(e) {
                 if (this.status == 200) {
@@ -153,7 +153,6 @@
                 div.style.width = "800px";
                 div.style.position = "relative";
                 div.setAttribute("data-page-num", num);
-                div.addEventListener("click", addSignatureOrText);
                 var canvas = document.createElement("canvas");
                 canvas.className = "page";
                 canvas.style.pointerEvents = "none";
@@ -166,7 +165,7 @@
                 };
                 page.render(renderContext);
                 div.appendChild(canvas);
-                document.getElementById("viewer").appendChild(div);
+                document.getElementById("pdf-viewer").appendChild(div);
             });
         }
 
@@ -179,16 +178,16 @@
             body.style.overflowY = "";
         }
 
-        function dowloadPdf() {
+        function downloadPdf() {
             var xhr = new XMLHttpRequest();
-            xhr.open(GET, RETRIEVE_DOC_URL + documentId, true);
+            xhr.open(GET, RETRIEVE_DOC_URL, true);
             xhr.responseType = "arraybuffer";
             xhr.onload = function(e) {
                 if (this.status == 200) {
                     var blob = new Blob([this.response], {type:"application/pdf"});
                     var link = document.createElement("a");
                     link.href = window.URL.createObjectURL(blob);
-                    link.download = "Preview " + documentId;
+                    link.download = "Preview";
                     link.click();
                 }
             };
