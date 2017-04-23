@@ -21,6 +21,8 @@ function init(){
                 });
                 menuItem.appendTo(menu);
             }
+            _generateUserProfile();
+            _initLoginDialog();
             initView();
         }
     });
@@ -101,3 +103,50 @@ function ajax(ajaxOptions) {
     });
 }
 
+var _generateUserProfile = function() {
+
+    var profile = $("<button></button>");
+    var icon = $("<i></i>");
+
+    profile.attr("id", "login-profile");
+    profile.addClass("mdl-button mdl-js-button mdl-button--fab");
+    profile.append(icon);
+
+    icon.addClass("material-icons");
+    icon.html("&#xE7FD;");
+
+    profile.append(icon);
+
+    $("#menu").append(profile);
+
+};
+
+var _initLoginDialog = function() {
+
+    var dialog = $("#login-dialog");
+
+    $(document).off("click", "#login-profile");
+    $(document).on("click", "#login-profile", function() {
+        dialog.show();
+    });
+
+    $(document).off("click", "#login-dialog .close");
+    $(document).on("click", "#login-dialog .close", function() {
+        dialog.hide();
+    });
+
+    var account = Cookies.get("account");
+
+    if (account && account.length > 0) {
+
+        account = JSON.parse(account);
+
+        $(dialog).find(".mdl-card__supporting-text").html(account.firstName + " " + account.lastName);
+
+    } else {
+        $("#login-profile").hide();
+    }
+
+    componentHandler.upgradeAllRegistered();
+
+};

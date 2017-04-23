@@ -38,3 +38,18 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     border-radius: 2px;
 }
+
+#login-dialog {
+    position: absolute;
+    top: 65px;
+    right: 50px;
+    display: inline-block;
+}
+
+#login-dialog .mdl-card__supporting-text {
+    font-size: 18px;
+}
+
+#login-dialog .mdl-card__actions {
+    text-align: right;
+}
