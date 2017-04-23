@@ -71,7 +71,7 @@ court.hack.task = function() {
 	        var hours = date.getHours();
 	        var time = "AM";
 	
-	        if (hours > 11) {
+	        if (hours > 12) {
 	            hours -= 12;
 	            time = "PM"
 	        } else if (hours == 0) {
@@ -108,6 +108,17 @@ court.hack.task = function() {
         }
 
         spanPrimary.prepend(icon);
+
+        var date2 = new Date(value.date);
+        var date1 = new Date(value.reminderDate);
+        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        var remind = $("<span></span>");
+
+        remind.addClass("remind");
+        var number = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        number > 0 && remind.html("Reminder in " + number + " days");
+
+        spanDescription.append(remind);
 
         li.append(spanSecondary);
         li.data("data", value);
@@ -185,8 +196,6 @@ court.hack.task = function() {
                         document.querySelector('#description').parentNode.MaterialTextfield.change("");
                         document.querySelector('#date').parentNode.MaterialTextfield.change("");
                         document.querySelector('#reminderLength').parentNode.MaterialTextfield.change("1");
-                        _loadTask(json, $("#tasks li").length);
-                        componentHandler.upgradeAllRegistered();
                         _dialog.close();
                         $("#dialogTitle").html("Add Task");
                         _data = false;
@@ -220,6 +229,8 @@ court.hack.task = function() {
                         document.querySelector('#description').parentNode.MaterialTextfield.change("");
                         document.querySelector('#date').parentNode.MaterialTextfield.change("");
                         document.querySelector('#reminderLength').parentNode.MaterialTextfield.change("1");
+                        _loadTask(json, $("#tasks li").length);
+                        componentHandler.upgradeAllRegistered();
                         _dialog.close();
                         $("#dialogTitle").html("Add Task");
                         _data = false;

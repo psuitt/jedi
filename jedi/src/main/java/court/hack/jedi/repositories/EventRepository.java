@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.annotation.ApplicationScope;
 
+import court.hack.jedi.beans.AccountBean;
 import court.hack.jedi.beans.ReminderBean;
 import court.hack.jedi.beans.TaskItem;
  
@@ -25,7 +26,9 @@ import court.hack.jedi.beans.TaskItem;
 @ManagedBean
 public class EventRepository {
 	@Inject
-	EventReminderRepository eventRemindeRepository;
+	private AccountRepository accountRepository;
+	@Inject
+	private EventReminderRepository eventRemindeRepository;
 	
 	private static final String GET_PENDING_REMINDERS = "SELECT e.*, er.REMINDER_DATE, er.SENT_FLAG, a.EMAIL, a.PHONE FROM EVENT e "
 		+ " JOIN EVENT_REMINDER er on er.ACCOUNT_ID = e.OWNER_ID AND er.EVENT_ID = e.EVENT_ID"
@@ -68,6 +71,9 @@ public class EventRepository {
 				bean.setSentFlag(rs.getString("SENT_FLAG"));
 				tasks.add(bean);
 			}
+            rs.close();
+            ps.close();
+            connection.close();
 			return tasks;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,6 +107,9 @@ public class EventRepository {
 				bean.setPhoneNumber(rs.getString("PHONE"));
 				reminders.add(bean);
 			}
+			rs.close();
+			ps.close();
+			connection.close();
 			return reminders;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,8 +130,8 @@ public class EventRepository {
 			return "Date is necessary.";
 		} else if (StringUtils.isEmpty(event.getDesc())) {
 			return "Description is necessary.";
-		} else if (StringUtils.isEmpty(event.getOwnerId())) {
-			return "Owner Id is necessary.";
+		} else if (StringUtils.isEmpty(event.getOwnerId()) && StringUtils.isEmpty(event.getEmail())) {
+			return "Owner Id or Email is necessary.";
 		} else if (StringUtils.isEmpty(event.getStatus())) {
 			return "Status is necessary.";
 		} else if (StringUtils.isEmpty(event.getTitle())) {
@@ -130,6 +139,13 @@ public class EventRepository {
 		} else {
 			Context ctx;
 			event.setEventId(RepositoryUtil.createUniqueId());
+			if (StringUtils.isEmpty(event.getOwnerId())) {
+				AccountBean ownerAccount = accountRepository.getAccountByEmail(event.getEmail());
+				if (ownerAccount == null || StringUtils.isEmpty(ownerAccount.getAccountId())) {
+					return "Unable to find owner account.";
+				}
+				event.setOwnerId(ownerAccount.getAccountId());
+			}
 			try {
 				ctx = new InitialContext();
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");

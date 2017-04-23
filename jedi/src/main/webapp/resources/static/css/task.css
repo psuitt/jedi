@@ -73,3 +73,8 @@ li.selected .mdl-list__item {
 i.doc {
     cursor: pointer;
 }
+
+.remind {
+    display: block;
+    color: red;
+}
