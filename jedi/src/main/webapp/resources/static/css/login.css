@@ -6,3 +6,11 @@
 	padding: 24px;
 	flex: none;
 }
+
+body .mdl-layout__container>div {
+    background: fixed center url("/jedi/resources/static/images/bg1.jpg");
+}
+
+.mdl-card__actions mdl-card--border {
+    text-align: right;
+}

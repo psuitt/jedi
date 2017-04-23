@@ -1,11 +1,40 @@
+html {
+    background: fixed center url("/jedi/resources/static/images/bg1.jpg");
+}
+
+body {
+    background: rgba(0, 0, 0, .7);
+}
+
+#homeLink,
+#homeLink:hover {
+    text-decoration: none !important;
+    color: white;
+}
+
 .contentDiv {
-	text-align: center;
+    text-align: center;
 }
+
 .android-navigation-container {
-	display: inherit;
-	width: 100%;
+    display: inherit;
+    width: 100%;
 }
+
 .mdl-layout-title {
-	line-height: 2;
-	font-size: 30px;
+    line-height: 2;
+    font-size: 30px;
+}
+
+#viewerContainer {
+
+}
+
+#viewer {
+    width: 1000px;
+    margin: 25px auto 0 auto;
+    padding: 10px 20px 20px 20px;
+    background: rgba(255, 255, 255, .9);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border-radius: 2px;
 }
