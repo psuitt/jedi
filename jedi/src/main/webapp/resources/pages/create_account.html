@@ -1,0 +1,45 @@
+
+<h2>Create Account</h2>
+<div class="contentDiv">
+	<form action="#">
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" type="email" id="email"/>
+			<label class="mdl-textfield__label" for="username">Email Address</label>
+			<span class="mdl-textfield__error">Not a valid email address.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" type="password" id="userpass" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"/>
+			<label class="mdl-textfield__label" for="userpass">Password</label>
+			<span class="mdl-textfield__error">Not a valid password.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" id="firstName"/>
+			<label class="mdl-textfield__label" for="userpass">First Name</label>
+			<span class="mdl-textfield__error">Not a valid first name.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" id="lastName"/>
+			<label class="mdl-textfield__label" for="userpass">Last Name</label>
+			<span class="mdl-textfield__error">Not a valid last name.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" id="accountType"/>
+			<label class="mdl-textfield__label" for="userpass">Account Type</label>
+			<span class="mdl-textfield__error">Not a valid account type.</span>
+		</div>
+		<br/>
+		<div class="mdl-textfield mdl-js-textfield">
+			<input class="mdl-textfield__input valid" type="tel" id="phoneNumber"/>
+			<label class="mdl-textfield__label" for="userpass">Phone Number</label>
+			<span class="mdl-textfield__error">Not a valid phone number.</span>
+		</div>
+	</form>
+	<div class="mdl-card__actions mdl-card--border">
+		<button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onclick="submitClicked();">Create Account</button>
+	</div>
+</div>
+<script src="/jedi/resources/static/js/create_account.js"></script>

@@ -76,12 +76,12 @@ public class AccountRepository {
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
 				Connection connection = ds.getConnection();
 				PreparedStatement ps = connection.prepareStatement(INSERT_ACCOUNT);
-				ps.setString(0, account.getEmail().toLowerCase());
-				ps.setString(0, account.getPassword());
-				ps.setString(0, account.getAccountType());
-				ps.setString(0, account.getFirstName());
-				ps.setString(0, account.getLastName());
-				ps.setString(0, account.getPhoneNumber());
+				ps.setString(1, account.getEmail().toLowerCase());
+				ps.setString(2, account.getPassword());
+				ps.setString(3, account.getAccountType());
+				ps.setString(4, account.getFirstName());
+				ps.setString(5, account.getLastName());
+				ps.setString(6, account.getPhoneNumber());
 				if (ps.executeUpdate() == 1) {
 					return null;
 				} else {

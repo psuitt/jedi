@@ -1,12 +1,23 @@
 package court.hack.jedi.beans;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class AccountBean {
+	@XmlElement(name="accountId")
 	private String accountId;
+	@XmlElement(name="email")
 	private String email;
+	@XmlElement(name="password")
 	private String password;
+	@XmlElement(name="accountType")
 	private String accountType;
+	@XmlElement(name="firstName")
 	private String firstName;
+	@XmlElement(name="lastName")
 	private String lastName;
+	@XmlElement(name="phoneNumber")
 	private String phoneNumber;
 	
 	
