@@ -1,6 +1,6 @@
-package court.hack.jedi.pojo;
+package court.hack.jedi.beans;
 
-public class MenuItem {
+public class MenuItemBean {
 
     private String name;
     private String url;

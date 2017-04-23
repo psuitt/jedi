@@ -1,8 +1,7 @@
 package court.hack.jedi.controllers.home;
 
+import court.hack.jedi.beans.MenuItemBean;
 import court.hack.jedi.controllers.HtmlPageController;
-import court.hack.jedi.pojo.MenuItem;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,24 +27,24 @@ public class Home extends HtmlPageController {
     @Path("/menu")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMenu() {
-        List<MenuItem> menuItemList = new LinkedList<>();
-        MenuItem menuItem = new MenuItem();
+        List<MenuItemBean> menuItemList = new LinkedList<>();
+        MenuItemBean menuItem = new MenuItemBean();
         menuItem.setName("List of Users");
         menuItem.setUrl("/jedi/resources/pages/users.html");
         menuItemList.add(menuItem);
-        menuItem = new MenuItem();
+        menuItem = new MenuItemBean();
         menuItem.setName("Tasks");
         menuItem.setUrl("/jedi/resources/pages/task.html");
         menuItemList.add(menuItem);
-        menuItem = new MenuItem();
+        menuItem = new MenuItemBean();
         menuItem.setName("Calendar");
         menuItem.setUrl("/jedi/resources/pages/calendar.html");
         menuItemList.add(menuItem);
-        menuItem = new MenuItem();
+        menuItem = new MenuItemBean();
         menuItem.setName("Create Task");
         menuItem.setUrl("/jedi/resources/pages/create_task.html");
         menuItemList.add(menuItem);
-        menuItem = new MenuItem();
+        menuItem = new MenuItemBean();
         menuItem.setName("Create Account");
         menuItem.setUrl("/jedi/resources/pages/create_account.html");
         menuItemList.add(menuItem);
