@@ -1,12 +1,18 @@
 $(document).ready(function () {
+    init();
+});
+
+function init(){
     ajax({
         url: "/jedi/api/home/menu",
         type: "GET",
         success: function (data) {
             var menu = $("#menu");
             for(var i = 0; i < data.length; i++){
-                var menuItem = $('<p>',{
+                var menuItem = $('<A>',{
                     text: data[i].name,
+                    href: "#" + data[i].name,
+                    id: data[i].name,
                     class: 'mdl-navigation__link mdl-typography--text-uppercase'
                 });
                 menuItem.attr("url", data[i].url);
@@ -15,12 +21,25 @@ $(document).ready(function () {
                 });
                 menuItem.appendTo(menu);
             }
+            initView();
         }
     });
-});
+}
+
+function initView(){
+    renderView(getUrlFromName(window.location.href.split('#')[1]));
+}
 
 function renderView(url){
-    $("#viewer").load(url);
+    if(url){
+        $("#viewer").load(url);
+    }
+}
+
+function getUrlFromName(name){
+    var menuItem = $("#"+name);
+    var url = $(menuItem).attr("url");
+    return url ? url : "";
 }
 
 function ajax(ajaxOptions) {
