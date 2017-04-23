@@ -51,7 +51,6 @@ public class Home extends HtmlPageController {
         menuItem.setName("Create Account");
         menuItem.setUrl("/jedi/resources/pages/create_account.html");
         menuItemList.add(menuItem);
-        EmailService.sendEmail();
         return Response.ok(menuItemList, MediaType.APPLICATION_JSON).build();
     }
 
