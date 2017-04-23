@@ -88,12 +88,13 @@ public class EventRepository {
 			return "Title is necessary.";
 		} else {
 			Context ctx;
+			event.setEventId(RepositoryUtil.createUniqueId());
 			try {
 				ctx = new InitialContext();
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
 				Connection connection = ds.getConnection();
 				PreparedStatement ps = connection.prepareStatement(INSERT_EVENT);
-				ps.setString(1, RepositoryUtil.createUniqueId());
+				ps.setString(1, event.getEventId());
 				ps.setString(2, event.getCreatorId());
 				ps.setString(3, event.getOwnerId());
 				ps.setString(4, event.getTitle());
