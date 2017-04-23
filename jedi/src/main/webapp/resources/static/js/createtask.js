@@ -27,7 +27,7 @@ court.hack.createtask = function() {
                 title: $("#title").val(),
                 desc: $("#desc").val(),
                 date: new moment($("#date").val()).toDate(),
-                status: "",
+                status: "P",
                 creatorId: account.accountId,
                 ownerId: $("#owner").val(),
                 //eventId,
