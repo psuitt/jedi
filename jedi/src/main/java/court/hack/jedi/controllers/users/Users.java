@@ -2,7 +2,6 @@ package court.hack.jedi.controllers.users;
 
 import court.hack.jedi.repositories.AccountRepository;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,8 +13,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("/users")
 public class Users {
-	@Inject
-	AccountRepository accountRepository;
+	private AccountRepository accountRepository = new AccountRepository();
 
     @GET
     @Path("/data")

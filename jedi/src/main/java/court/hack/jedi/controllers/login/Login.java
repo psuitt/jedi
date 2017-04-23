@@ -1,6 +1,5 @@
 package court.hack.jedi.controllers.login;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -18,8 +17,7 @@ import court.hack.jedi.repositories.AccountRepository;
 
 @Path("/login")
 public class Login extends HtmlPageController {
-	@Inject
-	AccountRepository accountRepository;
+	private AccountRepository accountRepository = new AccountRepository();
 	
     @GET
     @Produces(MediaType.APPLICATION_JSON)

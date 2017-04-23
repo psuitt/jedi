@@ -4,7 +4,6 @@ import court.hack.jedi.beans.TaskItem;
 import court.hack.jedi.controllers.HtmlPageController;
 import court.hack.jedi.repositories.EventRepository;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -17,9 +16,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("/createtask")
 public class CreateTask extends HtmlPageController {
-
-    @Inject
-    private EventRepository eventRepository;
+	private EventRepository eventRepository = new EventRepository();
 
     @GET
     public Response get() {

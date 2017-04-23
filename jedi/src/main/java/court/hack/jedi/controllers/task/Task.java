@@ -6,7 +6,6 @@ import court.hack.jedi.repositories.EventRepository;
 
 import java.util.Collection;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,8 +20,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("/task")
 public class Task extends HtmlPageController {
-	@Inject
-	private EventRepository eventRepository;
+	private EventRepository eventRepository = new EventRepository();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

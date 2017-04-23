@@ -1,6 +1,5 @@
 package court.hack.jedi.controllers;
 
-import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -14,7 +13,6 @@ import java.io.InputStreamReader;
  */
 @ApplicationScoped
 public class HtmlPageController {
-
     @Inject
     private ServletContext servletContext;
 

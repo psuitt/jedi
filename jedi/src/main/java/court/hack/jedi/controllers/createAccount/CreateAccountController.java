@@ -4,7 +4,6 @@ import court.hack.jedi.beans.AccountBean;
 import court.hack.jedi.controllers.HtmlPageController;
 import court.hack.jedi.repositories.AccountRepository;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -20,8 +19,7 @@ import org.springframework.util.StringUtils;
  */
 @Path("/create_account")
 public class CreateAccountController extends HtmlPageController {
-	@Inject
-	AccountRepository accountRepository;
+	private AccountRepository accountRepository = new AccountRepository();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

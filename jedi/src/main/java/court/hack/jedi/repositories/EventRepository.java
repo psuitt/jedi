@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
-import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -26,10 +25,8 @@ import court.hack.jedi.beans.TaskItem;
 @ApplicationScope
 @ManagedBean
 public class EventRepository {
-	@Inject
-	private AccountRepository accountRepository;
-	@Inject
-	private EventReminderRepository eventRemindeRepository;
+	private AccountRepository accountRepository = new AccountRepository();
+	private EventReminderRepository eventRemindeRepository = new EventReminderRepository();
 	
 	private static final String GET_PENDING_REMINDERS = "SELECT e.*, er.REMINDER_DATE, er.SENT_FLAG, a.EMAIL, a.PHONE FROM EVENT e "
 		+ " JOIN EVENT_REMINDER er on er.ACCOUNT_ID = e.OWNER_ID AND er.EVENT_ID = e.EVENT_ID"

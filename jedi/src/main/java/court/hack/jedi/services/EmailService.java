@@ -1,7 +1,7 @@
 package court.hack.jedi.services;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import java.util.Properties;
+
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,27 +13,33 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.util.Properties;
 
 public class EmailService {
+	private static Transport transport;
+	private static Session session;
 
-    private Properties props = System.getProperties();
-    private Session session = Session.getInstance(props, null);
-
-    public EmailService() {
+    static {
+        Properties props = System.getProperties();
         props.put("mail.smtp.starttls.enable", true); // added this line
         props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.user", "court.hack.123");
-        props.put("mail.smtp.password", "Password@1234");
+        props.put("mail.smtp.user", "court.hackathon");
+        props.put("mail.smtp.password", "CourtHackathon@123");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", true);
+
+        session = Session.getInstance(props, null);
+		try {
+			transport = session.getTransport("smtp");
+	        transport.connect("smtp.gmail.com", "court.hackathon", "CourtHackathon@123");
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
     }
 
-    public void sendEmail(String toEmailAddress, String subjectLine, String bodyContent) {
-
+    public static void sendEmail(String toEmailAddress, String subjectLine, String bodyContent){
         MimeMessage message = new MimeMessage(session);
 
-        System.out.println("Port: " + session.getProperty("mail.smtp.port"));
+        System.out.println("Port: "+session.getProperty("mail.smtp.port"));
 
         // Create the email addresses involved
         try {
@@ -64,17 +70,12 @@ public class EmailService {
             message.setContent(multipart);
 
             // Send message
-            Transport transport = session.getTransport("smtp");
-            transport.connect("smtp.gmail.com", "court.hack.123", "Password@123");
-            System.out.println("Transport: " + transport.toString());
             transport.sendMessage(message, message.getAllRecipients());
 
 
         } catch (AddressException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (MessagingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
