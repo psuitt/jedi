@@ -64,3 +64,12 @@ li.selected .mdl-list__item {
     color: #424242;
     background: white;
 }
+
+#mainContainer {
+    z-index: 20000;
+}
+
+#toolbarViewer i,
+i.doc {
+    cursor: pointer;
+}

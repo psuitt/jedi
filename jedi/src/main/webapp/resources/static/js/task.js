@@ -97,14 +97,15 @@ court.hack.task = function() {
         spanSecondary.addClass("mdl-list__item-secondary-action");
 
         var icon = $("<i/>");
-        icon.addClass("material-icons mdl-list__item-avatar");
+        icon.addClass("material-icons mdl-list__item-avatar " + type);
 
         if (type == "task") {
             icon.html("&#xE85D;");
         } else if (type == "appt") {
             icon.html("&#xE8B5;");
+        } else if (type == "doc") {
+            icon.html("&#xE24D;")
         }
-
 
         spanPrimary.prepend(icon);
 
@@ -260,6 +261,14 @@ court.hack.task = function() {
 
     };
 
+    var _openPdf = function() {
+
+        var pdf = new PdfViewer();
+
+        pdf.renderPDFViewer();
+
+    };
+
     var _init = function() {
         $(document).off("dblclick", "#tasks li", _editDblClk);
         $(document).on("dblclick", "#tasks li", _editDblClk);
@@ -278,6 +287,9 @@ court.hack.task = function() {
     	}
         _setUpDialog();
         componentHandler.upgradeAllRegistered();
+
+        $(document).off("click", "#tasks i.doc", _openPdf);
+        $(document).on("click", "#tasks i.doc", _openPdf);
     };
 
     return {
@@ -287,9 +299,6 @@ court.hack.task = function() {
     }
 
 }();
-function readyFn( jQuery ) {
-    // Code to run when the document is ready.
-}
 
 $( document ).ready( court.hack.task.init() );
 
