@@ -71,6 +71,13 @@ court.hack.calendar = function() {
                         };
                    item.color = "#3F51B5";
                 }
+            } else {
+            	item = {
+                        title: title,
+                        start: date.format("YYYY-MM-DDTHH:mm:ss"),
+                        className: event.status,
+                        color: "#4CAF50"
+                    };
             }
 
             if (index == 5) {
