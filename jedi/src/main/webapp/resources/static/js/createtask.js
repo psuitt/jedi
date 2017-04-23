@@ -17,13 +17,19 @@ court.hack.createtask = function() {
             var m = new moment();
                 m.subtract(1, 'd');
 
+            var account = Cookies.get("account");
+
+            if (!account || !account.accountId) {
+                location.href = window.location.origin + '/jedi/api/login';
+            }
+
             var json = {
                 title: $("#title").val(),
                 desc: $("#desc").val(),
                 date: new moment($("#date").val()).toDate(),
-                status: "",
-                creatorId: $("#owner").val(),
-                ownerId: "",
+                status: "P",
+                creatorId: account.accountId,
+                ownerId: $("#owner").val(),
                 //eventId,
                 reminderDate: m.toDate(),
                 sentFlag: "N"
