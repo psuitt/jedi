@@ -18,7 +18,7 @@ import court.hack.jedi.beans.TaskItem;
 @ManagedBean
 public class EventReminderRepository {
 
-	private static final String INSERT_EVENT_REMINDER = "INSERT INTO EVENT_REMINDERT"
+	private static final String INSERT_EVENT_REMINDER = "INSERT INTO EVENT_REMINDER"
 			+ " (EVENT_ID, ACCOUNT_ID, REMINDER_DATE, SENT_FLAG)"
 			+ " VALUES (?, ?, ?, ?)";
 	private static final String UPDATE_EVENT_REMINDER = "UPDATE EVENT_REMINDER"
@@ -49,9 +49,11 @@ public class EventReminderRepository {
 				PreparedStatement ps = connection.prepareStatement(INSERT_EVENT_REMINDER);
 				ps.setString(1, event.getEventId());
 				ps.setString(2, event.getOwnerId());
-				ps.setTimestamp(3, (Timestamp) event.getReminderDate());
+				ps.setObject(3, event.getReminderDate());
 				ps.setString(4, event.getSentFlag());
 				if (ps.executeUpdate() == 1) {
+				    ps.close();
+				    connection.close();
 					return null;
 				} else {
 					return "No rows were inserted";

@@ -140,9 +140,11 @@ public class EventRepository {
 				ps.setString(3, event.getOwnerId());
 				ps.setString(4, event.getTitle());
 				ps.setString(5, event.getDesc());
-				ps.setTimestamp(6, (Timestamp) event.getDate());
+				ps.setObject(6, event.getDate());
 				ps.setString(7, event.getStatus());
 				if (ps.executeUpdate() == 1) {
+				    ps.close();
+				    connection.close();
 					eventRemindeRepository.insertEvent(event);
 					return null;
 				} else {
@@ -152,7 +154,7 @@ public class EventRepository {
 				e.printStackTrace();
 				return e.getMessage();
 			}
-		}
+        }
 	}
 	
 	/**

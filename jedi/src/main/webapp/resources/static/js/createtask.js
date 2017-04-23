@@ -19,9 +19,11 @@ court.hack.createtask = function() {
 
             var account = Cookies.get("account");
 
-            if (!account || !account.accountId) {
+            if (!account) {
                 location.href = window.location.origin + '/jedi/api/login';
             }
+
+            account = JSON.parse(account);
 
             var json = {
                 title: $("#title").val(),

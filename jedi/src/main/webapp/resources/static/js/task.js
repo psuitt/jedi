@@ -98,9 +98,9 @@ court.hack.task = function() {
         var icon = $("<i/>");
         icon.addClass("material-icons mdl-list__item-avatar");
 
-        if (type == "appt") {
+        if (type == "task") {
             icon.html("&#xE85D;");
-        } else if (type == "task") {
+        } else if (type == "appt") {
             icon.html("&#xE8B5;");
         }
 
