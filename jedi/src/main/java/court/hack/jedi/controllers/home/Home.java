@@ -33,7 +33,7 @@ public class Home extends HtmlPageController {
         menuItem.setUrl("/jedi/resources/pages/users.html");
         menuItemList.add(menuItem);
         menuItem = new MenuItemBean();
-        menuItem.setName("Tasks");
+        menuItem.setName("Tasks and Appointments");
         menuItem.setUrl("/jedi/resources/pages/task.html");
         menuItemList.add(menuItem);
         menuItem = new MenuItemBean();
