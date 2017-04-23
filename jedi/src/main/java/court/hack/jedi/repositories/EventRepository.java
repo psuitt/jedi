@@ -25,7 +25,7 @@ public class EventRepository {
 	@Inject
 	EventReminderRepository eventRemindeRepository;
 	
-	private static final String GET_EVENT_BY_EMAIL = "SELECT e.*, FROM EVENT e "
+	private static final String GET_EVENT_BY_EMAIL = "SELECT e.*, er.REMINDER_DATE, er.SENT_FLAG FROM EVENT e "
 		+ " JOIN EVENT_REMINDER er on er.ACCOUNT_ID = e.OWNER_ID AND er.EVENT_ID = e.EVENT_ID"
 		+ " JOIN ACCOUNT a on a.ACCOUNT_ID = e.OWNER_ID WHERE EMAIL = ?";
 	private static final String INSERT_EVENT = "INSERT INTO EVENT"
@@ -58,6 +58,8 @@ public class EventRepository {
 				bean.setDate(rs.getTimestamp("EVENT_DATE"));
 				bean.setStatus(rs.getString("STATUS"));
 				bean.setEventId(rs.getString("EVENT_ID"));
+				bean.setReminderDate(rs.getTimestamp("REMINDER_DATE"));
+				bean.setSentFlag(rs.getString("SENT_FLAG"));
 				tasks.add(bean);
 			}
 			return tasks;
