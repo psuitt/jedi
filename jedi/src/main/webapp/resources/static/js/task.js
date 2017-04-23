@@ -9,32 +9,22 @@ court.hack.task = function() {
 
     var _dialog;
 
-    var _loadTasks = function() {
+    var _loadTasks = function(email) {
 
         var tasks = $("#tasks");
 
         tasks.html(" ");
-    	var accountString = Cookies.get("account");
-    	if (accountString == null) {
-    		window.location.href='/jedi/api/login'; 
-    	} else {
-    		var account = JSON.parse(accountString);
-            $.ajax({
-                url: "/jedi/api/task/data/" + account.email,
-                method: "GET",
-                success: function (data) {
-                    if (data && data.length > 0) {
-                        _.each(data, _loadTask);
-                    }
-                },
-                error: function (xhr, status, error) {
-
-                },
-                complete: function () {
-
+        $.ajax({
+            url: "/jedi/api/task/data/" + email,
+            method: "GET",
+            success: function (data) {
+                if (data && data.length > 0) {
+                    _.each(data, _loadTask);
                 }
-            });
-    	}
+            },
+            error: function (xhr, status, error) {},
+            complete: function () {}
+        });
     };
 
     var _loadTask = function(value, index) {
@@ -163,7 +153,19 @@ court.hack.task = function() {
     var _init = function() {
         $(document).off("dblclick", "#tasks li", _editDblClk);
         $(document).on("dblclick", "#tasks li", _editDblClk);
-        _loadTasks();
+    	var accountString = Cookies.get("account");
+    	if (accountString == null) {
+    		window.location.href='/jedi/api/login'; 
+    	} else {
+        	var emailParam = Cookies.get("email");
+        	if (emailParam === null || emailParam === null || emailParam === "" || typeof emailParam === "undefined") {
+        		var account = JSON.parse(accountString);
+        		_loadTasks(account.email);
+        	} else {
+        		Cookies.remove("email");
+        		_loadTasks(emailParam);
+        	}
+    	}
         _setUpDialog();
         getmdlSelect.init(".getmdl-select");
     };
