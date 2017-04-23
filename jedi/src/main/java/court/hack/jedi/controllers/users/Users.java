@@ -17,6 +17,7 @@ import java.util.List;
 public class Users {
 
     @GET
+    @Path("/data")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get() {
         List<User> usersList = new LinkedList<>();

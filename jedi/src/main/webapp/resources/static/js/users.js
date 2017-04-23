@@ -1,22 +1,80 @@
-ajax({
-    url: "/jedi/api/users",
-    type: "GET",
-    success: function (data) {
-        alert(JSON.stringify(data));
-        var userList = $("#users");
-        for(var i = 0; i < data.length; i++) {
-            var userItem = $('<li>', {
-                class: 'mdl-list__item mdl-list__item--two-line'
-            });
-            userItem.attr("user_id", data[i].url);
-            userItem.click(function () {
-                alert("I was Clicked.");
-            });
-            userItem.appendTo($('<i>', {
-                text: 'person',
-                class: 'material-icons mdl-list__item-avatar'
-            }));
-            userList.append(userItem);
+var court = court || {};
+court.hack = court.hack || {};
+court.hack.users = court.hack.users || {};
+
+court.hack.users = function() {
+
+    var _loadUsers = function() {
+
+        var users = $("#users");
+
+        users.html(" ");
+
+        $.ajax({
+            url: "/jedi/api/users/data",
+            method: "GET",
+            success: function (data) {
+                if (data && data.length > 0) {
+                    _.each(data, _loadTask);
+                }
+            },
+            error: function (xhr, status, error) {
+
+            },
+            complete: function () {
+
+            }
+        });
+
+
+    };
+
+    var _loadTask = function(value, index) {
+        console.log(index);
+        var name;
+        var users = $("#users");
+        var li = $("<li></li>");
+        li.addClass("mdl-list__item mdl-list__item--two-line");
+
+        var spanPrimary = $("<span></span>");
+        var spanName = $("<span></span>");
+        var spanTasks = $("<span></span>");
+        var personIcon = $("<i></i>");
+
+        spanPrimary.addClass("mdl-list__item-primary-content");
+        spanTasks.addClass("mdl-list__item-sub-title");
+        personIcon.addClass("material-icons mdl-list__item-avatar");
+
+
+        if(value.middleName){
+            spanName.html(value.firstName + " " + value.middleName + " " + value.lastName);
+        } else {
+            spanName.html(value.firstName + " " + value.lastName);
+        }
+
+        personIcon.html("person");
+        spanTasks.html(value.tasks + " Tasks");
+
+        spanPrimary.append(personIcon);
+        spanPrimary.append(spanName);
+        spanPrimary.append(spanTasks);
+
+        li.append(spanPrimary);
+
+        users.append(li);
+
+    };
+
+    var _init = function() {
+        _loadUsers();
+    };
+
+    return {
+        init: function() {
+            _init();
         }
     }
-});
+
+}();
+
+$( document ).ready( court.hack.users.init() );
