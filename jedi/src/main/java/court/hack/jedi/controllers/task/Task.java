@@ -34,8 +34,8 @@ public class Task extends HtmlPageController {
         list.add(new TaskItem("Test", "text desc", new Date(), "done"));
         list.add(new TaskItem("Test", "text desc", new Date(), "closed"));
         list.add(new TaskItem("Test", "text desc", new Date(), "done"));
-        list.add(new TaskItem("Test", "text desc", new Date(), ""));
-        list.add(new TaskItem("Test", "text desc", new Date(), ""));
+        list.add(new TaskItem("Appt:Test", "text desc", new Date(), ""));
+        list.add(new TaskItem("Task:Test", "text desc", new Date(), ""));
         list.add(new TaskItem("Test", "text desc", new Date(), "done"));
         list.add(new TaskItem("Test", "text desc", new Date(), "done"));
         list.add(new TaskItem("Test", "text desc", new Date(), ""));

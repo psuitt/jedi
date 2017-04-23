@@ -34,12 +34,30 @@ court.hack.calendar = function() {
         _.each(data, function (event, index) {
 
             var date = new moment(event.date);
+            var title = event.title;
+            var typeIndex =  title.indexOf(":");
+            var type = "";
+
+            if (typeIndex > -1) {
+                type = event.title.substr(0, typeIndex).toLowerCase();
+                title = event.title.substr(typeIndex + 1);
+            }
+
 
             var item = {
-                title: event.title,
+                title: title,
                 start: date.format("YYYY-MM-DDTHH:mm:ss"),
-                className: event.status
+                className: event.status + " " + type,
+                color: "#4CAF50"
             };
+
+            if (type) {
+                if (type == "appt") {
+                    item.color = "#F44336";
+                } else {
+                    item.color = "#3F51B5";
+                }
+            }
 
             if (index == 5) {
                 item.title = "Must Watch",
