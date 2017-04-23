@@ -189,10 +189,12 @@ public class EventRepository {
 				ps.setString(2, event.getOwnerId());
 				ps.setString(3, event.getTitle());
 				ps.setString(4, event.getDesc());
-				ps.setTimestamp(5, (Timestamp) event.getDate());
+				ps.setObject(5, event.getDate());
 				ps.setString(6, event.getStatus());
 				ps.setString(7, event.getEventId());
 				if (ps.executeUpdate() == 1) {
+				    ps.close();
+				    connection.close();
 					eventRemindeRepository.updateEvent(event);
 					return null;
 				} else {
