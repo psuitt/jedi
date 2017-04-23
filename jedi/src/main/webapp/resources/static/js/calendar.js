@@ -51,19 +51,25 @@ court.hack.calendar = function() {
                 title = event.title.substr(typeIndex + 1);
             }
 
-
-            var item = {
-                title: title,
-                start: date.format("YYYY-MM-DDTHH:mm:ss"),
-                className: event.status + " " + type,
-                color: "#4CAF50"
-            };
+            var item;
 
             if (type) {
                 if (type == "appt") {
-                    item.color = "#F44336";
+                	item = {
+                             title: title,
+                             start: date.format("YYYY-MM-DDTHH:mm:ss"),
+                             className: event.status + " " + type,
+                             color: "#4CAF50"
+                         };
+                	item.color = "#F44336";
                 } else {
-                    item.color = "#3F51B5";
+                	item = {
+                            title: title,
+                            start: date.format("YYYY-MM-DD"),
+                            className: event.status + " " + type,
+                            color: "#4CAF50"
+                        };
+                   item.color = "#3F51B5";
                 }
             }
 
