@@ -115,7 +115,8 @@ court.hack.task = function() {
         var remind = $("<span></span>");
 
         remind.addClass("remind");
-        remind.html("Reminder in " + Math.ceil(timeDiff / (1000 * 3600 * 24)) + " days");
+        var number = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        number > 0 && remind.html("Reminder in " + number + " days");
 
         spanDescription.append(remind);
 
