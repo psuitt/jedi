@@ -28,6 +28,10 @@
     border: 2px solid gray;
 }
 
+li.selected .mdl-list__item {
+    border: 2px solid #2196F3;
+}
+
 .mdl-list__item-secondary-action i {
     height: 24px;
     width: 24px;

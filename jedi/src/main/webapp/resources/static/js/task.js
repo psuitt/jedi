@@ -7,6 +7,8 @@ court.hack.task = court.hack.task || {};
 
 court.hack.task = function() {
 
+    var _dialog;
+
     var _loadTasks = function() {
 
         var tasks = $("#tasks");
@@ -56,7 +58,7 @@ court.hack.task = function() {
 
         var col2 = $("<span></span>");
         col2.addClass("col-2");
-        col2.html(date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear());
+        col2.html(new moment(value.date).format("M/D/YYYY"));
 
         spanTitle.append(col2);
 
@@ -69,6 +71,8 @@ court.hack.task = function() {
         if (hours > 11) {
             hours -= 12;
             time = "PM"
+        } else if (hours == 0) {
+            hours += 12;
         }
 
         col3.html(hours + ":" + date.getMinutes() + " " + time);
@@ -95,6 +99,7 @@ court.hack.task = function() {
         }
 
         li.append(spanSecondary);
+        li.data("data", value);
 
         tasks.append(li);
 
@@ -102,22 +107,23 @@ court.hack.task = function() {
 
     var _setUpDialog = function() {
 
-        var dialog = document.querySelector('dialog');
+        _dialog = document.querySelector('dialog');
         var showDialogButton = document.querySelector('#taskAdd');
 
-        if (! dialog.showModal) {
+        if (! _dialog.showModal) {
             dialogPolyfill.registerDialog(dialog);
         }
 
         showDialogButton.addEventListener('click', function() {
-            dialog.showModal();
+            _dialog.showModal();
         });
 
-        dialog.querySelector('.close').addEventListener('click', function() {
-            dialog.close();
+        _dialog.querySelector('.close').addEventListener('click', function() {
+            _dialog.close();
+            $("#dialogTitle").html("Add Task");
         });
 
-        dialog.querySelector('.add').addEventListener('click', function() {
+        _dialog.querySelector('.add').addEventListener('click', function() {
             var inputs = $("#dialogInputs input");
             var task =  {
                 title: inputs.eq(0).val(),
@@ -128,15 +134,35 @@ court.hack.task = function() {
             };
             _loadTask(task, $("#tasks li").length);
             componentHandler.upgradeAllRegistered();
-            dialog.close();
+            _dialog.close();
+            $("#dialogTitle").html("Add Task");
         });
 
     };
 
-    var _init = function() {
-        _loadTasks();
+    var _editDblClk = function() {
 
+        var self = $(this),
+            data = self.data("data");
+
+        $("#dialogTitle").html("Edit Task");
+        self.addClass("selected");
+
+        document.querySelector('#title').parentNode.MaterialTextfield.change(data.title);
+        document.querySelector('#description').parentNode.MaterialTextfield.change(data.desc);
+        document.querySelector('#date').parentNode.MaterialTextfield.change(data.date);
+        document.querySelector('#status').parentNode.MaterialTextfield.change(data.status);
+
+        _dialog.showModal();
+
+    };
+
+    var _init = function() {
+        $(document).off("dblclick", "#tasks li", _editDblClk);
+        $(document).on("dblclick", "#tasks li", _editDblClk);
+        _loadTasks();
         _setUpDialog();
+        getmdlSelect.init(".getmdl-select");
     };
 
     return {
