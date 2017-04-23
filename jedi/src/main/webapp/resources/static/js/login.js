@@ -22,3 +22,12 @@ function submitClicked() {
 		}
 	});
 }
+
+setTimeout(function(){
+    document.getElementById('userpass').addEventListener('keypress', function (e) {
+        var key = e.which || e.keyCode;
+        if (key === 13) {
+            submitClicked();
+        }
+    });
+},700);
