@@ -71,6 +71,9 @@ public class EventRepository {
 				bean.setSentFlag(rs.getString("SENT_FLAG"));
 				tasks.add(bean);
 			}
+            rs.close();
+            ps.close();
+            connection.close();
 			return tasks;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,6 +107,9 @@ public class EventRepository {
 				bean.setPhoneNumber(rs.getString("PHONE"));
 				reminders.add(bean);
 			}
+			rs.close();
+			ps.close();
+			connection.close();
 			return reminders;
 		} catch (Exception e) {
 			e.printStackTrace();
