@@ -155,7 +155,7 @@ court.hack.task = function() {
             title: $("#title").val(),
             desc: $("#description").val(),
             date: m.toDate(),
-            status: $("#status").val(),
+            status: "P",
             creatorId: account.accountId,
             reminderDate: m.toDate(),
             sentFlag: "N"
@@ -169,7 +169,7 @@ court.hack.task = function() {
             json.eventId = _data.eventId;
             json.ownerId = _data.ownerId;
 
-            m.add($("#reminderLength").val(), $("#reminder").val());
+            m.add($("#reminderLength").val(), "days");
 
             json.reminderDate = m.toDate();
 
@@ -183,8 +183,7 @@ court.hack.task = function() {
                         document.querySelector('#title').parentNode.MaterialTextfield.change("");
                         document.querySelector('#description').parentNode.MaterialTextfield.change("");
                         document.querySelector('#date').parentNode.MaterialTextfield.change("");
-                        document.querySelector('#status').parentNode.MaterialTextfield.change("");
-                        document.querySelector('#reminderLength').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#reminderLength').parentNode.MaterialTextfield.change("1");
                         _loadTask(json, $("#tasks li").length);
                         componentHandler.upgradeAllRegistered();
                         _dialog.close();
@@ -205,7 +204,7 @@ court.hack.task = function() {
 
             json.ownerId = json.creatorId;
 
-            m.add($("#reminderLength").val(), $("#reminder").val());
+            m.add($("#reminderLength").val(), "days");
 
             json.reminderDate = m.toDate();
 
@@ -219,10 +218,7 @@ court.hack.task = function() {
                         document.querySelector('#title').parentNode.MaterialTextfield.change("");
                         document.querySelector('#description').parentNode.MaterialTextfield.change("");
                         document.querySelector('#date').parentNode.MaterialTextfield.change("");
-                        document.querySelector('#status').parentNode.MaterialTextfield.change("");
-                        document.querySelector('#reminderLength').parentNode.MaterialTextfield.change("");
-                        _loadTask(json, $("#tasks li").length);
-                        componentHandler.upgradeAllRegistered();
+                        document.querySelector('#reminderLength').parentNode.MaterialTextfield.change("1");
                         _dialog.close();
                         $("#dialogTitle").html("Add Task");
                         _data = false;
@@ -255,7 +251,10 @@ court.hack.task = function() {
         document.querySelector('#title').parentNode.MaterialTextfield.change(_data.title);
         document.querySelector('#description').parentNode.MaterialTextfield.change(_data.desc);
         document.querySelector('#date').parentNode.MaterialTextfield.change(new moment(_data.date).format("MM/DD/YYYY"));
-        document.querySelector('#status').parentNode.MaterialTextfield.change(_data.status);
+        var date2 = new Date(_data.date);
+        var date1 = new Date(_data.reminderDate);
+        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        document.querySelector("#reminderLength").parentNode.MaterialTextfield.change(Math.ceil(timeDiff / (1000 * 3600 * 24)));
 
         _dialog.showModal();
 
@@ -278,7 +277,7 @@ court.hack.task = function() {
         	}
     	}
         _setUpDialog();
-        getmdlSelect.init(".getmdl-select");
+        componentHandler.upgradeAllRegistered();
     };
 
     return {
