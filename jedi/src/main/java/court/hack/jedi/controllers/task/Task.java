@@ -31,14 +31,14 @@ public class Task extends HtmlPageController {
 
         List<TaskItem> list = new ArrayList<>();
 
-        list.add(new TaskItem("Test", "text desc", new Date(), "done"));
-        list.add(new TaskItem("Test", "text desc", new Date(), "closed"));
-        list.add(new TaskItem("Test", "text desc", new Date(), "done"));
-        list.add(new TaskItem("Appt:Test", "text desc", new Date(), ""));
-        list.add(new TaskItem("Task:Test", "text desc", new Date(), ""));
-        list.add(new TaskItem("Test", "text desc", new Date(), "done"));
-        list.add(new TaskItem("Test", "text desc", new Date(), "done"));
-        list.add(new TaskItem("Test", "text desc", new Date(), ""));
+        list.add(new TaskItem("Test", "text desc", new Date(), "done", "creator", "owner"));
+        list.add(new TaskItem("Test", "text desc", new Date(), "closed", "creator", "owner"));
+        list.add(new TaskItem("Test", "text desc", new Date(), "done", "creator", "owner"));
+        list.add(new TaskItem("Appt:Test", "text desc", new Date(), "", "creator", "owner"));
+        list.add(new TaskItem("Task:Test", "text desc", new Date(), "", "creator", "owner"));
+        list.add(new TaskItem("Test", "text desc", new Date(), "done", "creator", "owner"));
+        list.add(new TaskItem("Test", "text desc", new Date(), "done", "creator", "owner"));
+        list.add(new TaskItem("Test", "text desc", new Date(), "", "creator", "owner"));
 
         return Response.ok(list, MediaType.APPLICATION_JSON).build();
     }

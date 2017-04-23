@@ -100,21 +100,43 @@ court.hack.task = function() {
 
     };
 
-    var _init = function() {
-        _loadTasks();
+    var _setUpDialog = function() {
 
-        $("#taskAdd").click(function() {
-            var inputs = $("#taskInputs input");
+        var dialog = document.querySelector('dialog');
+        var showDialogButton = document.querySelector('#taskAdd');
+
+        if (! dialog.showModal) {
+            dialogPolyfill.registerDialog(dialog);
+        }
+
+        showDialogButton.addEventListener('click', function() {
+            dialog.showModal();
+        });
+
+        dialog.querySelector('.close').addEventListener('click', function() {
+            dialog.close();
+        });
+
+        dialog.querySelector('.add').addEventListener('click', function() {
+            var inputs = $("#dialogInputs input");
             var task =  {
                 title: inputs.eq(0).val(),
                 desc: inputs.eq(1).val(),
-                date: inputs.eq(2).val(),
+                date: new Date(),
                 time: inputs.eq(3).val(),
                 status: "close"
             };
             _loadTask(task, $("#tasks li").length);
             componentHandler.upgradeAllRegistered();
+            dialog.close();
         });
+
+    };
+
+    var _init = function() {
+        _loadTasks();
+
+        _setUpDialog();
     };
 
     return {

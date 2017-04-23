@@ -3,6 +3,8 @@ package court.hack.jedi.repositories;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.faces.bean.ManagedBean;
 import javax.naming.Context;
@@ -19,6 +21,7 @@ import court.hack.jedi.beans.AccountBean;
 public class AccountRepository {
 	
 	private static final String GET_ACCOUNT_BY_EMAIL = "SELECT * FROM ACCOUNT WHERE EMAIL = ?";
+	private static final String GET_ACCOUNTS = "SELECT * FROM ACCOUNT";
 	private static final String GET_ACCOUNT_BY_EMAIL_PASSWORD = "SELECT * FROM ACCOUNT WHERE EMAIL = ? AND PASSWORD = ?";
 	private static final String INSERT_ACCOUNT = "INSERT INTO ACCOUNT"
 			+ " (ACCOUNT_ID, EMAIL, PASSWORD, ACCOUNT_TYPE, FIRST_NAME, LAST_NAME, PHONE)"
@@ -48,6 +51,33 @@ public class AccountRepository {
 				bean.setPhoneNumber(rs.getString("PHONE"));
 				return bean;
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Collection<AccountBean> getAccounts() {
+		Collection<AccountBean> accounts = new ArrayList<>();
+		Context ctx;
+		try {
+			ctx = new InitialContext();
+			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
+			Connection connection = ds.getConnection();
+			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNTS);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next())  {
+				AccountBean bean = new AccountBean();
+				bean.setAccountId(rs.getString("ACCOUNT_ID"));
+				bean.setAccountType(rs.getString("ACCOUNT_TYPE"));
+				bean.setEmail(rs.getString("EMAIL"));
+				bean.setFirstName(rs.getString("FIRST_NAME"));
+				bean.setLastName(rs.getString("LAST_NAME"));
+				bean.setPassword(rs.getString("PASSWORD"));
+				bean.setPhoneNumber(rs.getString("PHONE"));
+				accounts.add(bean);
+			}
+			return  accounts;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
