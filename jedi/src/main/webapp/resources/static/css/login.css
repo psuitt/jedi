@@ -7,6 +7,16 @@
 	flex: none;
 }
 
+.mdl-card__title {
+    color: #fff;
+    height: 176px;
+    background: url('/jedi/resources/static/images/bg.png') center / cover;
+}
+
+.mdl-card__title-text {
+    background: rgba(0, 0, 0, .4);
+}
+
 body .mdl-layout__container>div {
     background: fixed center url("/jedi/resources/static/images/bg1.jpg");
 }
