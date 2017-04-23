@@ -31,6 +31,7 @@ public class CreateAccountController extends HtmlPageController {
 
     @POST
     @Consumes(value="application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public Boolean post(AccountBean account) {
     	String errorMessage = accountRepository.insertAccount(account);
     	if (!StringUtils.isEmpty(errorMessage)) {
