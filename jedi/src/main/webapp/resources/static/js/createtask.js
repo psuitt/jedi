@@ -31,7 +31,8 @@ court.hack.createtask = function() {
                 date: new moment($("#date").val()).toDate(),
                 status: "P",
                 creatorId: account.accountId,
-                ownerId: $("#owner").val(),
+                ownerId: $("#ownerId").val(),
+                email: $("#ownerEmail").val(),
                 //eventId,
                 reminderDate: m.toDate(),
                 sentFlag: "N"
@@ -47,7 +48,7 @@ court.hack.createtask = function() {
                         document.querySelector('#title').parentNode.MaterialTextfield.change("");
                         document.querySelector('#desc').parentNode.MaterialTextfield.change("");
                         document.querySelector('#date').parentNode.MaterialTextfield.change("");
-                        document.querySelector('#owner').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#ownerEmail').parentNode.MaterialTextfield.change("");
                     } else {
                         alert(data);
                     }
@@ -65,6 +66,16 @@ court.hack.createtask = function() {
     var _init = function() {
         componentHandler.upgradeAllRegistered();
        _addListeners();
+		var accountString = Cookies.get("account");
+		if (accountString == null) {
+			window.location.href='/jedi/api/login'; 
+		} else {
+			var account = JSON.parse(accountString);
+			if (account.accountType === "USER") {
+				document.querySelector('#ownerId').parentNode.MaterialTextfield.change(account.accountId);
+				$("#ownerEmail").parent().hide();
+			}
+		}
     };
 
     return {

@@ -34,12 +34,14 @@ public class Home extends HtmlPageController {
     @Path("/menu")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMenu(@Context HttpServletRequest request) {
-    	String cookieVal = null;
+    	String cookieVal = "";
     	Cookie[] cookies = request.getCookies();
-    	for (Cookie cookie: cookies) {
-    		if (cookie.getName().equalsIgnoreCase("account")) {
-    			cookieVal = cookie.getValue();
-    		}
+    	if (cookies != null) {
+	    	for (Cookie cookie: cookies) {
+	    		if (cookie.getName().equalsIgnoreCase("account")) {
+	    			cookieVal = cookie.getValue();
+	    		}
+	    	}
     	}
     	String userType = null;
     	if (cookieVal.contains("USER")) {

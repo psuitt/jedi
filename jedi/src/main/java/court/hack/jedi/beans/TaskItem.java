@@ -28,6 +28,8 @@ public class TaskItem {
     private Date reminderDate;
     @XmlElement(name = "sentFlag")
     private String sentFlag;
+    @XmlElement(name = "email")
+    private String email;
 
     public TaskItem() {
     }
@@ -54,6 +56,10 @@ public class TaskItem {
 
 	public String getDesc() {
         return desc;
+    }
+
+	public String getEmail() {
+        return email;
     }
     
     public String getEventId() {
@@ -90,6 +96,10 @@ public class TaskItem {
 
     public void setDesc(final String desc) {
         this.desc = desc;
+    }
+
+	public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setEventId(String eventId) {

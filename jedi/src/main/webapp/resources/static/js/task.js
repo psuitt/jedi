@@ -71,7 +71,7 @@ court.hack.task = function() {
 	        var hours = date.getHours();
 	        var time = "AM";
 	
-	        if (hours > 11) {
+	        if (hours > 12) {
 	            hours -= 12;
 	            time = "PM"
 	        } else if (hours == 0) {

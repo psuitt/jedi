@@ -38,11 +38,9 @@ court.hack.users = function() {
 
         var spanPrimary = $("<span></span>");
         var spanName = $("<span></span>");
-        var spanTasks = $("<span></span>");
         var personIcon = $("<i></i>");
 
         spanPrimary.addClass("mdl-list__item-primary-content");
-        spanTasks.addClass("mdl-list__item-sub-title");
         personIcon.addClass("material-icons mdl-list__item-avatar");
 
 
@@ -53,11 +51,9 @@ court.hack.users = function() {
         }
 
         personIcon.html("person");
-        spanTasks.html(value.tasks + " Tasks");
 
         spanPrimary.append(personIcon);
         spanPrimary.append(spanName);
-        spanPrimary.append(spanTasks);
         
         spanPrimary.on("click", function() {
         	Cookies.set("email", value.email);
