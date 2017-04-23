@@ -3,6 +3,7 @@ package court.hack.jedi.repositories;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -37,13 +38,16 @@ public class AccountRepository {
 		}
 
 		Context ctx;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			ctx = new InitialContext();
 			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-			Connection connection = ds.getConnection();
-			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BY_ACCOUNT_ID);
+			connection = ds.getConnection();
+			ps = connection.prepareStatement(GET_ACCOUNT_BY_ACCOUNT_ID);
 			ps.setString(1, accountId);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			AccountBean bean = new AccountBean();
 			if (rs.next())  {
 				bean.setAccountId(rs.getString("ACCOUNT_ID"));
@@ -53,10 +57,21 @@ public class AccountRepository {
 				bean.setLastName(rs.getString("LAST_NAME"));
 				bean.setPassword(rs.getString("PASSWORD"));
 				bean.setPhoneNumber(rs.getString("PHONE"));
+				rs.close();
+				ps.close();
+				connection.close();
 				return bean;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -67,13 +82,16 @@ public class AccountRepository {
 		}
 
 		Context ctx;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			ctx = new InitialContext();
 			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-			Connection connection = ds.getConnection();
-			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL);
+			connection = ds.getConnection();
+			ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL);
 			ps.setString(1, email.toLowerCase());
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			AccountBean bean = new AccountBean();
 			if (rs.next())  {
 				bean.setAccountId(rs.getString("ACCOUNT_ID"));
@@ -83,23 +101,38 @@ public class AccountRepository {
 				bean.setLastName(rs.getString("LAST_NAME"));
 				bean.setPassword(rs.getString("PASSWORD"));
 				bean.setPhoneNumber(rs.getString("PHONE"));
+				rs.close();
+				ps.close();
+				connection.close();
 				return bean;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+
 		return null;
 	}
 	
 	public Collection<AccountBean> getAccounts() {
 		Collection<AccountBean> accounts = new ArrayList<>();
 		Context ctx;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			ctx = new InitialContext();
 			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-			Connection connection = ds.getConnection();
-			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNTS);
-			ResultSet rs = ps.executeQuery();
+			connection = ds.getConnection();
+			ps = connection.prepareStatement(GET_ACCOUNTS);
+			rs = ps.executeQuery();
 			while (rs.next())  {
 				AccountBean bean = new AccountBean();
 				bean.setAccountId(rs.getString("ACCOUNT_ID"));
@@ -111,10 +144,22 @@ public class AccountRepository {
 				bean.setPhoneNumber(rs.getString("PHONE"));
 				accounts.add(bean);
 			}
+			rs.close();
+			ps.close();
+			connection.close();
 			return  accounts;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+
 		return null;
 	}
 	
@@ -124,14 +169,17 @@ public class AccountRepository {
 		}
 		
 		Context ctx;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			ctx = new InitialContext();
 			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-			Connection connection = ds.getConnection();
-			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL_PASSWORD);
+			connection = ds.getConnection();
+			ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL_PASSWORD);
 			ps.setString(1, email.toLowerCase());
 			ps.setString(2, password);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				AccountBean bean = new AccountBean();
 				bean.setAccountId(rs.getString("ACCOUNT_ID"));
@@ -143,17 +191,30 @@ public class AccountRepository {
 				bean.setPhoneNumber(rs.getString("PHONE"));
 				return bean;
 			} else {
+				rs.close();
+				ps.close();
+				connection.close();
 				return null;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+
 		return null;
 	}
 	
 	/**
 	 * Insert an account
 	 * @return an error string, or null if successful
+	 * @throws SQLException 
 	 */
 	public String insertAccount(final AccountBean account) {
 		if (account == null) {
@@ -170,11 +231,13 @@ public class AccountRepository {
 			return "Last name is necessary.";
 		} else {
 			Context ctx;
+			Connection connection = null;
+			PreparedStatement ps = null;
 			try {
 				ctx = new InitialContext();
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-				Connection connection = ds.getConnection();
-				PreparedStatement ps = connection.prepareStatement(INSERT_ACCOUNT);
+				connection = ds.getConnection();
+				ps = connection.prepareStatement(INSERT_ACCOUNT);
 				ps.setString(1, RepositoryUtil.createUniqueId());
 				ps.setString(2, account.getEmail().toLowerCase());
 				ps.setString(3, account.getPassword());
@@ -183,6 +246,8 @@ public class AccountRepository {
 				ps.setString(6, account.getLastName());
 				ps.setString(7, account.getPhoneNumber());
 				if (ps.executeUpdate() == 1) {
+					ps.close();
+					connection.close();
 					return null;
 				} else {
 					return "No rows were inserted";
@@ -190,13 +255,22 @@ public class AccountRepository {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return e.getMessage();
+			} finally {
+				try {
+					ps.close();
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
+
 		}
 	}
 	
 	/**
 	 * Insert an account
 	 * @return an error string, or null if successful
+	 * @throws SQLException 
 	 */
 	public String updateAccount(final AccountBean account) {
 		if (account == null) {
@@ -215,11 +289,13 @@ public class AccountRepository {
 			return "Last name is necessary.";
 		} else {
 			Context ctx;
+			Connection connection = null;
+			PreparedStatement ps = null;
 			try {
 				ctx = new InitialContext();
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-				Connection connection = ds.getConnection();
-				PreparedStatement ps = connection.prepareStatement(UPDATE_ACCOUNT);
+				connection = ds.getConnection();
+				ps = connection.prepareStatement(UPDATE_ACCOUNT);
 				ps.setString(1, account.getEmail().toLowerCase());
 				ps.setString(2, account.getPassword());
 				ps.setString(3, account.getAccountType().toUpperCase());
@@ -228,6 +304,8 @@ public class AccountRepository {
 				ps.setString(6, account.getPhoneNumber());
 				ps.setString(7, account.getAccountId());
 				if (ps.executeUpdate() == 1) {
+					ps.close();
+					connection.close();
 					return null;
 				} else {
 					return "No rows were updated.";
@@ -235,7 +313,15 @@ public class AccountRepository {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return e.getMessage();
+			} finally {
+				try {
+					ps.close();
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
+
 		}
 	}
 }

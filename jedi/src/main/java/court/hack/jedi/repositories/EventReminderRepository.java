@@ -2,7 +2,7 @@ package court.hack.jedi.repositories;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
+import java.sql.SQLException;
 
 import javax.faces.bean.ManagedBean;
 import javax.naming.Context;
@@ -42,18 +42,20 @@ public class EventReminderRepository {
 			return "Sent Flag is necessary.";
 		} else {
 			Context ctx;
+			Connection connection = null;
+			PreparedStatement ps = null;
 			try {
 				ctx = new InitialContext();
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-				Connection connection = ds.getConnection();
-				PreparedStatement ps = connection.prepareStatement(INSERT_EVENT_REMINDER);
+				connection = ds.getConnection();
+				ps = connection.prepareStatement(INSERT_EVENT_REMINDER);
 				ps.setString(1, event.getEventId());
 				ps.setString(2, event.getOwnerId());
 				ps.setObject(3, event.getReminderDate());
 				ps.setString(4, event.getSentFlag());
 				if (ps.executeUpdate() == 1) {
-				    ps.close();
-				    connection.close();
+					ps.close();
+					connection.close();
 					return null;
 				} else {
 					return "No rows were inserted";
@@ -61,6 +63,13 @@ public class EventReminderRepository {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return e.getMessage();
+			} finally {
+				try {
+					ps.close();
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -82,18 +91,20 @@ public class EventReminderRepository {
 			return "Sent Flag is necessary.";
 		} else {
 			Context ctx;
+			Connection connection = null;
+			PreparedStatement ps = null;
 			try {
 				ctx = new InitialContext();
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-				Connection connection = ds.getConnection();
-				PreparedStatement ps = connection.prepareStatement(UPDATE_EVENT_REMINDER);
+				connection = ds.getConnection();
+				ps = connection.prepareStatement(UPDATE_EVENT_REMINDER);
 				ps.setObject(1, event.getReminderDate());
 				ps.setString(2, event.getSentFlag());
 				ps.setString(3, event.getEventId());
 				ps.setString(4, event.getOwnerId());
 				if (ps.executeUpdate() == 1) {
-                    ps.close();
-                    connection.close();
+					ps.close();
+					connection.close();
 					return null;
 				} else {
 					return "No rows were updated";
@@ -101,6 +112,13 @@ public class EventReminderRepository {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return e.getMessage();
+			} finally {
+				try {
+					ps.close();
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

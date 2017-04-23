@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,13 +52,16 @@ public class EventRepository {
 		
 		Collection<TaskItem> tasks = new ArrayList<>();
 		Context ctx;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			ctx = new InitialContext();
 			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-			Connection connection = ds.getConnection();
-			PreparedStatement ps = connection.prepareStatement(GET_EVENT_BY_EMAIL);
+			connection = ds.getConnection();
+			ps = connection.prepareStatement(GET_EVENT_BY_EMAIL);
 			ps.setString(1, email.toLowerCase());
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			while (rs.next())  {
 				TaskItem bean = new TaskItem();
 				bean.setCreatorId(rs.getString("CREATOR_ID"));
@@ -71,12 +75,20 @@ public class EventRepository {
 				bean.setSentFlag(rs.getString("SENT_FLAG"));
 				tasks.add(bean);
 			}
-            rs.close();
-            ps.close();
-            connection.close();
+			rs.close();
+			ps.close();
+			connection.close();
 			return tasks;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -85,13 +97,16 @@ public class EventRepository {
 		final Date today = new Date();
 		Collection<ReminderBean> reminders = new ArrayList<>();
 		Context ctx;
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			ctx = new InitialContext();
 			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-			Connection connection = ds.getConnection();
-			PreparedStatement ps = connection.prepareStatement(GET_PENDING_REMINDERS);
+			connection = ds.getConnection();
+			ps = connection.prepareStatement(GET_PENDING_REMINDERS);
 			ps.setTimestamp(1, new Timestamp(today.getTime()));
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			while (rs.next())  {
 				ReminderBean bean = new ReminderBean();
 				bean.setCreatorId(rs.getString("CREATOR_ID"));
@@ -113,6 +128,14 @@ public class EventRepository {
 			return reminders;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -138,6 +161,8 @@ public class EventRepository {
 			return "Title is necessary.";
 		} else {
 			Context ctx;
+			Connection connection = null;
+			PreparedStatement ps = null;
 			event.setEventId(RepositoryUtil.createUniqueId());
 			if (StringUtils.isEmpty(event.getOwnerId())) {
 				AccountBean ownerAccount = accountRepository.getAccountByEmail(event.getEmail());
@@ -149,8 +174,8 @@ public class EventRepository {
 			try {
 				ctx = new InitialContext();
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-				Connection connection = ds.getConnection();
-				PreparedStatement ps = connection.prepareStatement(INSERT_EVENT);
+				connection = ds.getConnection();
+				ps = connection.prepareStatement(INSERT_EVENT);
 				ps.setString(1, event.getEventId());
 				ps.setString(2, event.getCreatorId());
 				ps.setString(3, event.getOwnerId());
@@ -162,6 +187,8 @@ public class EventRepository {
 				    ps.close();
 				    connection.close();
 					eventRemindeRepository.insertEvent(event);
+					ps.close();
+					connection.close();
 					return null;
 				} else {
 					return "No rows were inserted";
@@ -169,6 +196,13 @@ public class EventRepository {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return e.getMessage();
+			} finally {
+				try {
+					ps.close();
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
         }
 	}
@@ -196,11 +230,13 @@ public class EventRepository {
 			return "Title is necessary.";
 		} else {
 			Context ctx;
+			Connection connection = null;
+			PreparedStatement ps = null;
 			try {
 				ctx = new InitialContext();
 				DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-				Connection connection = ds.getConnection();
-				PreparedStatement ps = connection.prepareStatement(UPDATE_EVENT);
+				connection = ds.getConnection();
+				ps = connection.prepareStatement(UPDATE_EVENT);
 				ps.setString(1, event.getCreatorId());
 				ps.setString(2, event.getOwnerId());
 				ps.setString(3, event.getTitle());
@@ -219,6 +255,13 @@ public class EventRepository {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return e.getMessage();
+			} finally {
+				try {
+					ps.close();
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
