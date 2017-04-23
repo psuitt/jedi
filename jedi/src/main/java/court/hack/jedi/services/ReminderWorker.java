@@ -70,7 +70,7 @@ public class ReminderWorker {
             this.emailService.sendEmail(reminderBean.getPhoneNumber() + "@messaging.sprintpcs.com", subject, body);
             this.emailService.sendEmail(reminderBean.getPhoneNumber() + "@vtext.com", subject, body);
             this.emailService.sendEmail(reminderBean.getPhoneNumber() + "@tmomail.net", subject, body);
-            this.emailService.sendEmail(reminderBean.getPhoneNumber() + "@mms.txt.net", subject, body);
+            this.emailService.sendEmail(reminderBean.getPhoneNumber() + "@txt.att.net", subject, body);
         }
 
     }
