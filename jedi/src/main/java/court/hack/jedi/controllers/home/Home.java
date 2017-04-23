@@ -2,10 +2,13 @@ package court.hack.jedi.controllers.home;
 
 import court.hack.jedi.beans.MenuItemBean;
 import court.hack.jedi.controllers.HtmlPageController;
+import court.hack.jedi.services.ReminderWorker;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.LinkedList;
@@ -17,9 +20,12 @@ import java.util.List;
 @Path("/home")
 public class Home extends HtmlPageController {
 
+    //Super lazy way of initializing reminders
+    private ReminderWorker reminder = new ReminderWorker();
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get() {
+    public Response get(@Context HttpServletRequest request) {
         return Response.ok(getHtmlPage("pages/home.html"), MediaType.TEXT_HTML_TYPE).build();
     }
 

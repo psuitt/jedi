@@ -25,8 +25,6 @@ public class EmailService {
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", true);
 
-
-
         Session session = Session.getInstance(props, null);
         MimeMessage message = new MimeMessage(session);
 
