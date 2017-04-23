@@ -4,6 +4,7 @@ import court.hack.jedi.beans.MenuItemBean;
 import court.hack.jedi.controllers.HtmlPageController;
 import court.hack.jedi.services.ReminderWorker;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -32,12 +33,28 @@ public class Home extends HtmlPageController {
     @GET
     @Path("/menu")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMenu() {
+    public Response getMenu(@Context HttpServletRequest request) {
+    	String cookieVal = null;
+    	Cookie[] cookies = request.getCookies();
+    	for (Cookie cookie: cookies) {
+    		if (cookie.getName().equalsIgnoreCase("account")) {
+    			cookieVal = cookie.getValue();
+    		}
+    	}
+    	String userType = null;
+    	if (cookieVal.contains("USER")) {
+    		userType = "USER";
+    	} else {
+    		userType = "ADMN";
+    	}
         List<MenuItemBean> menuItemList = new LinkedList<>();
-        MenuItemBean menuItem = new MenuItemBean();
-        menuItem.setName("Account List");
-        menuItem.setUrl("/jedi/resources/pages/users.html");
-        menuItemList.add(menuItem);
+        MenuItemBean menuItem;
+        if (userType.equalsIgnoreCase("ADMN")) {
+            menuItem = new MenuItemBean();
+	        menuItem.setName("Account List");
+	        menuItem.setUrl("/jedi/resources/pages/users.html");
+	        menuItemList.add(menuItem);
+        }
         menuItem = new MenuItemBean();
         menuItem.setName("Tasks and Appointments");
         menuItem.setUrl("/jedi/resources/pages/task.html");
@@ -50,14 +67,18 @@ public class Home extends HtmlPageController {
         menuItem.setName("Create Task");
         menuItem.setUrl("/jedi/resources/pages/create_task.html");
         menuItemList.add(menuItem);
-        menuItem = new MenuItemBean();
-        menuItem.setName("Create Account");
-        menuItem.setUrl("/jedi/resources/pages/create_account.html");
-        menuItemList.add(menuItem);
-        menuItem = new MenuItemBean();
-        menuItem.setName("Update Account");
-        menuItem.setUrl("/jedi/resources/pages/update_account.html");
-        menuItemList.add(menuItem);
+        if (userType.equalsIgnoreCase("ADMN")) {
+            menuItem = new MenuItemBean();
+	        menuItem.setName("Create Account");
+	        menuItem.setUrl("/jedi/resources/pages/create_account.html");
+	        menuItemList.add(menuItem);
+        }
+        if (userType.equalsIgnoreCase("USER")) {
+	        menuItem = new MenuItemBean();
+	        menuItem.setName("Update Account");
+	        menuItem.setUrl("/jedi/resources/pages/update_account.html");
+	        menuItemList.add(menuItem);
+        }
         return Response.ok(menuItemList, MediaType.APPLICATION_JSON).build();
     }
 
