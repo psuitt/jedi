@@ -29,7 +29,7 @@ public class Home extends HtmlPageController {
     public Response getMenu() {
         List<MenuItemBean> menuItemList = new LinkedList<>();
         MenuItemBean menuItem = new MenuItemBean();
-        menuItem.setName("List of User");
+        menuItem.setName("Account List");
         menuItem.setUrl("/jedi/resources/pages/users.html");
         menuItemList.add(menuItem);
         menuItem = new MenuItemBean();

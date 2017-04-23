@@ -118,6 +118,39 @@ public class AccountRepository {
 		return null;
 	}
 	
+	public AccountBean getValidatedAccountByEmail(final String email, final String password) {
+		if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+			return null;
+		}
+		
+		Context ctx;
+		try {
+			ctx = new InitialContext();
+			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
+			Connection connection = ds.getConnection();
+			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL_PASSWORD);
+			ps.setString(1, email.toLowerCase());
+			ps.setString(2, password);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				AccountBean bean = new AccountBean();
+				bean.setAccountId(rs.getString("ACCOUNT_ID"));
+				bean.setAccountType(rs.getString("ACCOUNT_TYPE"));
+				bean.setEmail(rs.getString("EMAIL"));
+				bean.setFirstName(rs.getString("FIRST_NAME"));
+				bean.setLastName(rs.getString("LAST_NAME"));
+				bean.setPassword(rs.getString("PASSWORD"));
+				bean.setPhoneNumber(rs.getString("PHONE"));
+				return bean;
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * Insert an account
 	 * @return an error string, or null if successful
@@ -145,7 +178,7 @@ public class AccountRepository {
 				ps.setString(1, RepositoryUtil.createUniqueId());
 				ps.setString(2, account.getEmail().toLowerCase());
 				ps.setString(3, account.getPassword());
-				ps.setString(4, account.getAccountType());
+				ps.setString(4, account.getAccountType().toUpperCase());
 				ps.setString(5, account.getFirstName());
 				ps.setString(6, account.getLastName());
 				ps.setString(7, account.getPhoneNumber());
@@ -159,31 +192,6 @@ public class AccountRepository {
 				return e.getMessage();
 			}
 		}
-	}
-	
-	public boolean isValidUser(final String email, final String password) {
-		if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-			return false;
-		}
-		
-		Context ctx;
-		try {
-			ctx = new InitialContext();
-			DataSource ds = (DataSource)ctx.lookup("jdbc/jedi");
-			Connection connection = ds.getConnection();
-			PreparedStatement ps = connection.prepareStatement(GET_ACCOUNT_BY_EMAIL_PASSWORD);
-			ps.setString(1, email.toLowerCase());
-			ps.setString(2, password);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 	
 	/**
@@ -214,7 +222,7 @@ public class AccountRepository {
 				PreparedStatement ps = connection.prepareStatement(UPDATE_ACCOUNT);
 				ps.setString(1, account.getEmail().toLowerCase());
 				ps.setString(2, account.getPassword());
-				ps.setString(3, account.getAccountType());
+				ps.setString(3, account.getAccountType().toUpperCase());
 				ps.setString(4, account.getFirstName());
 				ps.setString(5, account.getLastName());
 				ps.setString(6, account.getPhoneNumber());

@@ -2,12 +2,13 @@ package court.hack.jedi.controllers.login;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import court.hack.jedi.beans.AccountBean;
 import court.hack.jedi.controllers.HtmlPageController;
 import court.hack.jedi.repositories.AccountRepository;
 
@@ -26,20 +27,14 @@ public class Login extends HtmlPageController {
         return Response.ok(getHtmlPage("pages/login.html"), MediaType.TEXT_HTML_TYPE).build();
     }
 
-    @POST
-    public Boolean post(String userpass) {
-    	Boolean valid = false;
-    	
+    @GET
+    @Path("/{userpass}")
+    public Response getJson(@PathParam("userpass") String userpass) {
     	String[] parts = userpass.split(",");
     	String user = parts[0];
     	String pass = parts[1];
-    	
-    	valid = accountRepository.isValidUser(user, pass);
-    	
-    	if (!valid) {
-    		return false;
-    	}
-    	return true;
+    	AccountBean account = accountRepository.getValidatedAccountByEmail(user, pass);
+        return Response.ok(account, MediaType.APPLICATION_JSON).build();
     }
 
     

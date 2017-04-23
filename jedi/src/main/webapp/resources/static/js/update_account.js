@@ -14,12 +14,6 @@ function searchClicked() {
 			    document.querySelector('#lastName').parentNode.MaterialTextfield.change(data.lastName);
 			    document.querySelector('#accountType').parentNode.MaterialTextfield.change(data.accountType);
 			    document.querySelector('#phoneNumber').parentNode.MaterialTextfield.change(data.phoneNumber);
-//				$("#email").val(data.email);
-//				$("#userpass").val(data.password);
-//				$("#firstName").val(data.firstName);
-//				$("#lastName").val(data.lastName);
-//				$("#accountType").val(data.accountType);
-//				$("#phoneNumber").val(data.phoneNumber);
 				
 				$(".beforeSearch").hide();
 				$(".afterSearch").show();
@@ -66,6 +60,14 @@ function submitClicked() {
 function init() {
 	$(".afterSearch").hide();
 	componentHandler.upgradeAllRegistered();
+	var accountString = Cookies.get("account");
+	if (accountString == null) {
+		window.location.href='/jedi/api/login'; 
+	} else {
+		var account = JSON.parse(accountString);
+		document.querySelector('#accountId').parentNode.MaterialTextfield.change(account.accountId);
+		searchClicked();
+	}
 }
 
 

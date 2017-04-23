@@ -3,17 +3,15 @@
  */
 
 function submitClicked() {
-	var data = $("#username").val() + "," +	$("#userpass").val();
 	$.ajax({
-		type: "POST",
-		url: "/jedi/api/login",
-		data: data,
-		dataType: "json",
+		type: "GET",
+		url: "/jedi/api/login/" + $("#username").val() + "," +	$("#userpass").val(),
 		contentType : "application/json",
 		cache: false,
 		async: false,
 		success: function(data) {
 			if (data) {
+				Cookies.set("account", data);
 				window.location.href='/jedi/api/home'; 
 			} else {
 				alert('Invalid username or password.');	
