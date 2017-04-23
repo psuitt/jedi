@@ -59,10 +59,12 @@ public class Home extends HtmlPageController {
         menuItem.setName("Tasks and Appointments");
         menuItem.setUrl("/jedi/resources/pages/task.html");
         menuItemList.add(menuItem);
-        menuItem = new MenuItemBean();
-        menuItem.setName("Calendar");
-        menuItem.setUrl("/jedi/resources/pages/calendar.html");
-        menuItemList.add(menuItem);
+        if (userType.equalsIgnoreCase("USER")) {
+	        menuItem = new MenuItemBean();
+	        menuItem.setName("Calendar");
+	        menuItem.setUrl("/jedi/resources/pages/calendar.html");
+	        menuItemList.add(menuItem);
+        }
         menuItem = new MenuItemBean();
         menuItem.setName("Create Task");
         menuItem.setUrl("/jedi/resources/pages/create_task.html");
