@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/jedi/resources/static/css/task.css">
 
-<h2>Tasks</h2>
 <div id="taskContainer">
+    <h2>Tasks</h2>
     <ul id="tasks" class="demo-list-two mdl-list">
         <li class="mdl-list__item mdl-list__item--two-line">
     <span class="mdl-list__item-primary-content">
@@ -45,10 +45,44 @@
 <dialog class="mdl-dialog">
     <h4 class="mdl-dialog__title">Create Task</h4>
     <div id="dialogInputs" class="mdl-dialog__content">
-        <input type="text"/>
-        <input type="text"/>
-        <input type="text"/>
-        <input type="text"/>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="title">
+            <label class="mdl-textfield__label" for="title">Title</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="description">
+            <label class="mdl-textfield__label" for="description">Description</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="date">
+            <label class="mdl-textfield__label" for="date">Date</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="status">
+            <label class="mdl-textfield__label" for="status">Status</label>
+        </div>
+
+        <h4>Reminder</h4>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="reminderLength">
+            <label class="mdl-textfield__label" for="reminderLength">Reminder Length</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select">
+            <input class="mdl-textfield__input" id="reminder" name="country" value="None" type="text" readonly tabIndex="-1" data-val="BLR"/>
+            <label class="mdl-textfield__label" for="reminder">Reminder</label>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="reminder">
+                <li class="mdl-menu__item" data-val="non">None</li>
+                <li class="mdl-menu__item" data-val="min">Minutes</li>
+                <li class="mdl-menu__item" data-val="hr">Hours</li>
+                <li class="mdl-menu__item" data-val="day">Days</li>
+            </ul>
+        </div>
     </div>
     <div class="mdl-dialog__actions">
         <button id="saveTask" type="button" class="mdl-button add">Add</button>
