@@ -1,4 +1,17 @@
 #createTaskContainer {
     margin: auto;
     width: 1000px;
+    text-align: center;
+}
+
+#createTaskContainer {
+    text-align: center;
+}
+
+#createTaskContainer h2 {
+    text-align: left;
+}
+
+#createTasksForm {
+    text-align: center;
 }

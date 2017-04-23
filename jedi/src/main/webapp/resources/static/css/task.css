@@ -41,6 +41,10 @@ li.selected .mdl-list__item {
     text-align: center;
 }
 
+#taskContainer h2 {
+    text-align: left;
+}
+
 #tasks {
     width: 800px;
     margin: 0 auto;
