@@ -16,7 +16,6 @@ court.hack.task = function() {
         $.ajax({
             url: "/jedi/api/task/data",
             method: "GET",
-            dataType: "application/json",
             success: function (data) {
                 if (data && data.length > 0) {
                     _.each(data, _loadTask);
@@ -63,7 +62,16 @@ court.hack.task = function() {
 
         var col3 = $("<span></span>");
         col3.addClass("col-3");
-        col3.html(date.getHours() + ":" + date.getMinutes());
+
+        var hours = date.getHours();
+        var time = "AM";
+
+        if (hours > 11) {
+            hours -= 12;
+            time = "PM"
+        }
+
+        col3.html(hours + ":" + date.getMinutes() + " " + time);
 
         spanTitle.append(col3);
 
@@ -79,20 +87,12 @@ court.hack.task = function() {
 
         spanSecondary.addClass("mdl-list__item-secondary-action");
 
-        var label = $("<label></label>");
-
-        label.attr("for", "input-" + index);
-        label.addClass("mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect");
-
-
         if (value.status) {
             var icon = $("<i/>");
             icon.addClass("material-icons md-48");
             icon.html(value.status);
-            label.append(icon);
+            spanSecondary.append(icon);
         }
-
-        spanSecondary.append(label);
 
         li.append(spanSecondary);
 
@@ -130,4 +130,4 @@ function readyFn( jQuery ) {
 
 $( document ).ready( court.hack.task.init() );
 
-// @task.js
+//# sourceURL=task.js
