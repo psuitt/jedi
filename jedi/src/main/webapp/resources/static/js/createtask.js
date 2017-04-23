@@ -35,8 +35,13 @@ court.hack.createtask = function() {
                 data: JSON.stringify(json),
                 contentType: "application/json",
                 success: function (data) {
-                    if (data && data.length > 0) {
-
+                    if (!data) {
+                        document.querySelector('#title').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#desc').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#date').parentNode.MaterialTextfield.change("");
+                        document.querySelector('#owner').parentNode.MaterialTextfield.change("");
+                    } else {
+                        alert(data);
                     }
                 },
                 error: function (xhr, status, error) {
