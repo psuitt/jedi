@@ -49,7 +49,7 @@ public class EventReminderRepository {
 				PreparedStatement ps = connection.prepareStatement(INSERT_EVENT_REMINDER);
 				ps.setString(1, event.getEventId());
 				ps.setString(2, event.getOwnerId());
-				ps.setTimestamp(3, (Timestamp) event.getReminderDate());
+				ps.setTimestamp(3, new Timestamp(event.getReminderDate().getTime()));
 				ps.setString(4, event.getSentFlag());
 				if (ps.executeUpdate() == 1) {
 					return null;
