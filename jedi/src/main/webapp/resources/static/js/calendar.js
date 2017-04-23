@@ -37,7 +37,7 @@ court.hack.calendar = function() {
 
             var item = {
                 title: event.title,
-                start: date.format("YYYY-MM-DD"),
+                start: date.format("YYYY-MM-DDTHH:mm:ss"),
                 className: event.status
             };
 
@@ -64,8 +64,7 @@ court.hack.calendar = function() {
             },
             defaultDate: '2017-04-12',
             navLinks: true, // can click day/week names to navigate views
-            eventLimit: true ,// allow "more" link when too many events
-            displayEventTime: true
+            eventLimit: true// allow "more" link when too many events
         });
 
         $(".fc-toolbar button").addClass("mdl-button mdl-js-button mdl-button--raised mdl-button--colored");
